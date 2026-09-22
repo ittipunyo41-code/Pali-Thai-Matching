@@ -153,8 +153,10 @@
     </div>  
     <div class="sticky-actions">
   <div class="row">
-    <button class="solid" id="confirmBtn" onclick="confirmPair()" disabled>✓ ยืนยันจับคู่นี้</button>
-    <button onclick="clearSelection()">ยกเลิกการเลือก</button>
+    <button class="solid" id="confirmBtn" onclick="confirmPair()" disabled>
+  ✓ ยืนยันจับคู่นี้ <small>(Ctrl/⌘ + Enter)</small>
+</button>
+     <button onclick="clearSelection()">ยกเลิกการเลือก</button>
     <button onclick="undoLastPair()" id="undoBtn" disabled>ลบคู่ล่าสุด</button>
     <button onclick="resetAllPairs()">ล้างคู่ทั้งหมด</button>
   </div>
@@ -541,6 +543,19 @@ document.querySelectorAll('.matched').forEach(function(span){
   a.click();  
   URL.revokeObjectURL(url);  
 }  
+document.addEventListener('keydown', (event) => {
+  const isConfirmShortcut = (event.ctrlKey || event.metaKey) && event.key === 'Enter';
+
+  if (isConfirmShortcut) {
+    const confirmBtn = document.getElementById('confirmBtn');
+
+    // ยืนยันได้เฉพาะเมื่อปุ่มพร้อมใช้งาน
+    if (confirmBtn && !confirmBtn.disabled) {
+      event.preventDefault();
+      confirmPair();
+    }
+  }
+});
 </script>  
 </body>  
 </html>  
