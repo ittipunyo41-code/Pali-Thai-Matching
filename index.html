@@ -1,562 +1,943 @@
-<!DOCTYPE html>  
-<html lang="th">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">  
-<title>เครื่องมือจับคู่ประโยคบาลี–ไทย</title>  
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">  
-<style>  
-  :root{  
-    --paper:#faf7f1; --paper-raised:#ffffff; --ink:#211c15; --ink-soft:#786d5c;  
-    --rule:#ddd2bd; --accent:#6b4226; --accent-soft:#efe3d3;  
-    --lock-a:#2f5233; --lock-b:#8a4b2e;  
-  }  
-  @media (prefers-color-scheme: dark){  
-    :root:not([data-theme="light"]){  
-      --paper:#1b1712; --paper-raised:#26211a; --ink:#f1eade; --ink-soft:#b8ab93;  
-      --rule:#4a4030; --accent:#e0b587; --accent-soft:#3a2f22;  
-    }  
-  }  
-  :root[data-theme="dark"]{  
-    --paper:#1b1712; --paper-raised:#26211a; --ink:#f1eade; --ink-soft:#b8ab93;  
-    --rule:#4a4030; --accent:#e0b587; --accent-soft:#3a2f22;  
-  }  
-  *{box-sizing:border-box;}  
-  html{scroll-padding-top:env(safe-area-inset-top,0px);}  
-  body{  
-    font-family:'Sarabun',sans-serif; background:var(--paper); color:var(--ink);  
-    margin:0; padding:20px; padding-top:calc(20px + env(safe-area-inset-top,0px));  
-    padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));  
-  }  
-  .wrap{max-width:1000px; margin:0 auto;}  
-  h1{font-size:1.35rem; font-weight:700; margin:0 0 4px;}  
-  .sub{color:var(--ink-soft); font-size:.92rem; margin:0 0 22px;}  
-  section{  
-    background:var(--paper-raised); border:1px solid var(--rule); border-radius:10px;  
-    padding:18px; margin-bottom:18px;  
-  }  
-  h2{font-size:.98rem; font-weight:700; margin:0 0 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}  
-  .badge{font-size:.78rem; font-weight:500; color:var(--ink-soft); background:var(--accent-soft); padding:3px 9px; border-radius:20px;}  
-  textarea{  
-    width:100%; min-height:88px; font-family:'Sarabun',sans-serif; font-size:1.02rem;  
-    padding:10px; border:1px solid var(--rule); border-radius:6px; background:var(--paper);  
-    color:var(--ink); resize:vertical;  
-  }  
-  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:14px;}  
-  @media (max-width:640px){ .two-col{grid-template-columns:1fr;} }  
-  .col-label{font-size:.82rem; font-weight:600; color:var(--ink-soft); margin-bottom:6px;}  
-  button{  
-    font-family:'Sarabun',sans-serif; font-size:.88rem; font-weight:600; padding:8px 14px;  
-    border:1px solid var(--accent); border-radius:6px; background:transparent; color:var(--accent);  
-    cursor:pointer;  
-  }  
-  button:hover:not(:disabled){background:var(--accent-soft);}  
-  button:disabled{opacity:.35; cursor:not-allowed;}  
-  button.solid{background:var(--accent); color:var(--paper-raised);}  
-  button.solid:hover:not(:disabled){opacity:.88; background:var(--accent);}  
-  .row{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; align-items:center;}  
-  .status{font-size:.86rem; color:var(--ink-soft); flex:1 1 220px;}  
-  .word-panel{  
-    border:1px solid var(--rule); border-radius:8px; padding:12px; min-height:110px;  
-    line-height:2.1; font-size:1.08rem; overflow-x:auto;  
-  }  
-  .w{padding:1px 4px; border-radius:3px; cursor:pointer; display:inline-block;}  
-  .w.disabled{cursor:default; opacity:.55;}  
-  .w.sel-start{background:var(--ink); color:var(--paper); font-weight:600;}  
-  .w.sel-end{background:var(--accent); color:var(--paper-raised); font-weight:600;}  
-  .w.sel-range{background:var(--accent-soft);}  
-  .pairs-table{width:100%; border-collapse:collapse; margin-top:14px; font-size:.9rem;}  
-  .pairs-table th{text-align:left; color:var(--ink-soft); font-weight:600; padding:6px 8px; border-bottom:1px solid var(--rule);}  
-  .pairs-table td{padding:7px 8px; border-bottom:1px solid var(--rule); vertical-align:top;}  
-  .swatch{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:middle;}  
-  .empty-note{color:var(--ink-soft); font-size:.88rem; font-style:italic;}  
-  .preview{  
-    border:1px solid var(--rule); border-radius:8px; padding:20px; font-size:1.18rem; line-height:2.3;  
-    overflow-x:auto;  
-  }  
-  .preview .matched{cursor:pointer;}  
-  .preview .plain{color:var(--ink);}  
-  .hint{font-size:.82rem; color:var(--ink-soft); margin-top:8px;}  
-  .pdf-fields{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px;}  
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>เครื่องมือจับคู่ประโยคบาลี–ไทย</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf7f1; --paper-raised:#ffffff; --ink:#211c15; --ink-soft:#786d5c;
+    --rule:#ddd2bd; --accent:#6b4226; --accent-soft:#efe3d3;--thai-text:#1f6b66;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#1b1712; --paper-raised:#26211a; --ink:#f1eade; --ink-soft:#b8ab93;
+      --rule:#4a4030; --accent:#e0b587; --accent-soft:#3a2f22;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#1b1712; --paper-raised:#26211a; --ink:#f1eade; --ink-soft:#b8ab93;
+    --rule:#4a4030; --accent:#e0b587; --accent-soft:#3a2f22;--thai-text:#7ec8bf;
+  }
+  
+ 
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    font-family:'Sarabun',sans-serif; background:var(--paper); color:var(--ink);
+    margin:0; padding:20px; padding-top:calc(20px + env(safe-area-inset-top,0px));
+    padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));
+  }
+  .wrap{max-width:1000px; margin:0 auto;}
+  h1{font-size:1.35rem; font-weight:700; margin:0 0 4px;}
+  .sub{color:var(--ink-soft); font-size:.92rem; margin:0 0 22px;}
+  section{
+    background:var(--paper-raised); border:1px solid var(--rule); border-radius:10px;
+    padding:18px; margin-bottom:18px;
+  }
+  h2{font-size:.98rem; font-weight:700; margin:0 0 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+  .badge{font-size:.78rem; font-weight:500; color:var(--ink-soft); background:var(--accent-soft); padding:3px 9px; border-radius:20px;}
+  textarea{
+    width:100%; min-height:88px; font-family:'Sarabun',sans-serif; font-size:1.02rem;
+    padding:10px; border:1px solid var(--rule); border-radius:6px; background:var(--paper);
+    color:var(--ink); resize:vertical; line-height:1.6;
+  }
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:640px){ .two-col{grid-template-columns:1fr;} }
+  .col-label{font-size:.82rem; font-weight:600; color:var(--ink-soft); margin-bottom:6px;}
+  button{
+    font-family:'Sarabun',sans-serif; font-size:.88rem; font-weight:600; padding:8px 14px;
+    border:1px solid var(--accent); border-radius:6px; background:transparent; color:var(--accent);
+    cursor:pointer;
+  }
+  button:hover:not(:disabled){background:var(--accent-soft);}
+  button:disabled{opacity:.35; cursor:not-allowed;}
+  button.solid{background:var(--accent); color:var(--paper-raised);}
+  button.solid:hover:not(:disabled){opacity:.88; background:var(--accent);}
+  .row{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; align-items:center;}
+  .status{font-size:.86rem; color:var(--ink-soft); flex:1 1 220px;}
 
+  /* ═══════════════════════════════════════════════════════════
+     แผงคำ (word panel) — line-height ปกติ, ใช้ display:inline
+     พร้อม padding + margin ลบ เพื่อไม่ให้กระทบการตัดบรรทัด
+     ═══════════════════════════════════════════════════════════ */
+  .word-panel{
+    border:1px solid var(--rule); border-radius:8px;
+    padding:10px 12px; min-height:110px;
+    line-height:1.7; font-size:1.02rem; overflow-x:auto;
+    word-break:normal; overflow-wrap:break-word;
+  }
+  .w{
+    display:inline;
+    padding:1px 3px;
+    margin:0 -3px;
+    border-radius:3px;
+    cursor:pointer;
+    line-height:inherit;
+  }
+  .w.disabled{cursor:pointer;}
+  .w.sel-start{background:var(--ink); color:var(--paper); font-weight:600;}
+  .w.sel-end{background:var(--accent); color:var(--paper-raised); font-weight:600;}
+  .w.sel-range{background:var(--accent-soft);}
 
-.sticky-actions {
-  position: sticky;
-  bottom: 0;
-  z-index: 10;
-  margin-top: 10px;
-  padding: 10px 0;
-  padding-bottom: calc(10px + env(safe-area-inset-bottom));
-  background: var(--paper);
-  border-top: 1px solid var(--rule);
-}
-  @media (max-width:640px){ .pdf-fields{grid-template-columns:1fr;} }  
-  .pdf-fields input{  
-    width:100%; font-family:'Sarabun',sans-serif; font-size:.95rem; padding:8px 10px;  
-    border:1px solid var(--rule); border-radius:6px; background:var(--paper); color:var(--ink);  
-  }  
-  .print-title{display:none;}  
-  
-  @media print{  
-    @page{ size:A4; margin:20mm; }  
-    body{ background:#ffffff !important; padding:0 !important; }  
-    .wrap > h1, .wrap > .sub, section:not(#previewSection), #previewSection h2,  
-    #previewSection .hint, .pdf-fields, #previewSection .row{  
-      display:none !important;  
-    }  
-    section#previewSection{ border:none !important; box-shadow:none !important; padding:0 !important; }  
-    .print-title{  
-      display:block !important; font-size:1.3rem; font-weight:700; color:#1a1a1a;  
-      margin-bottom:16px; border-bottom:1px solid #ccc; padding-bottom:8px;  
-    }  
-    .preview{ border:none !important; padding:0 !important; color:#000000 !important; }  
-  }  
-</style>  
-</head>  
-<body>  
-<div class="wrap">  
-  <h1>จับคู่ประโยคบาลี–ไทย</h1>  
-  <p class="sub">ใส่ข้อความสองภาษา จับคู่ช่วงคำที่ตรงกัน แล้วดูผลลัพธ์แบบสลับภาษาได้ทีละประโยค</p>  
-  
-  <section>  
-    <h2>1. ใส่ข้อความ</h2>  
-    <div class="two-col">  
-      <div>  
-        <div class="col-label">ภาษาบาลี</div>  
-        <textarea id="paliInput" placeholder="วางข้อความบาลีที่นี่..."></textarea>  
-      </div>  
-      <div>  
-        <div class="col-label">คำแปลไทย</div>  
-        <textarea id="thaiInput" placeholder="วางคำแปลไทยที่นี่..."></textarea>  
-      </div>  
-    </div>  
-    <div class="row">  
-      <button class="solid" onclick="processTexts()">ประมวลผล</button>  
-      <button onclick="loadSample()">โหลดตัวอย่าง</button>  
-    </div>  
-  </section>  
-  
-  <section id="matchSection" style="display:none;">  
-    <h2>2. จับคู่ช่วงประโยค <span class="badge" id="pairCount">0 คู่</span></h2>  
-    <div class="row">  
-      <span class="status" id="statusText">คลิกคำต้นและคำปลายฝั่งบาลี จากนั้นคลิกคำต้นและคำปลายฝั่งไทยที่ตรงกัน</span>  
-    </div>  
-    <div class="two-col" style="margin-top:10px;">  
-      <div>  
-        <div class="col-label">บาลี</div>  
-        <div class="word-panel" id="paliPanel"></div>  
-      </div>  
-      <div>  
-        <div class="col-label">ไทย</div>  
-        <div class="word-panel" id="thaiPanel"></div>  
-      </div>  
-    </div>  
+  /* ── ตัวแบ่งย่อหน้า / แท็บ ── */
+  .para-break{
+    display:block;
+    height:0.25em;
+    line-height:0;
+    font-size:0;
+    margin:0;
+  }
+  .tab-break{
+    display:inline-block;
+    width:1.5em;
+    height:0.01em;
+    line-height:0;
+    font-size:0;
+    vertical-align:baseline;
+  }
+
+  .pairs-table{width:100%; border-collapse:collapse; margin-top:14px; font-size:.9rem;}
+  .pairs-table th{text-align:left; color:var(--ink-soft); font-weight:600; padding:6px 8px; border-bottom:1px solid var(--rule);}
+  .pairs-table td{padding:7px 8px; border-bottom:1px solid var(--rule); vertical-align:top;}
+  .swatch{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:middle;}
+  .empty-note{color:var(--ink-soft); font-size:.88rem; font-style:italic;}
+
+  /* ═══════════════════════════════════════════════════════════
+     ผลลัพธ์ — line-height พอดี อ่านสบาย ไม่โปร่งเกิน
+     ═══════════════════════════════════════════════════════════ */
+  .preview{
+    border:1px solid var(--rule); border-radius:8px; padding:18px;
+    font-size:1.08rem; line-height:1.85;
+    overflow-x:auto;
+  }
+  .preview .matched{cursor:pointer;}
+  .preview .plain{color:var(--ink);}
+  .preview .para-break{height:0.35em;}
+
+  .hint{font-size:.82rem; color:var(--ink-soft); margin-top:8px;}
+  .pdf-fields{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px;}
+
+  .sticky-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    margin-top: 10px;
+    padding: 10px 0;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+  }
+
+  #thaiPanel {
+    --thai-font-size: 18px;
+    font-size: var(--thai-font-size);
+  }
+
+  .font-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+  }
+  .font-controls span:first-child {
+    margin-right: auto;
+  }
+
+  .break-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 10px;
+    padding: 8px 10px;
+    background: var(--accent-soft);
+    border-radius: 6px;
+    font-size: .86rem;
+  }
+  .break-target {
+    flex: 1 1 180px;
+    color: var(--ink-soft);
+    font-size: .84rem;
+  }
+  .break-target strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  @media (max-width:640px){ .pdf-fields{grid-template-columns:1fr;} }
+  .pdf-fields input{
+    width:100%; font-family:'Sarabun',sans-serif; font-size:.95rem; padding:8px 10px;
+    border:1px solid var(--rule); border-radius:6px; background:var(--paper); color:var(--ink);
+  }
+  .print-title{display:none;}
+
+  @media print{
+    @page{ size:A4; margin:20mm; }
+    body{ background:#ffffff !important; padding:0 !important; }
+    .wrap > h1, .wrap > .sub, section:not(#previewSection), #previewSection h2,
+    #previewSection .hint, .pdf-fields, #previewSection .row{
+      display:none !important;
+    }
+    section#previewSection{ border:none !important; box-shadow:none !important; padding:0 !important; }
+    .print-title{
+      display:block !important; font-size:1.3rem; font-weight:700; color:#1a1a1a;
+      margin-bottom:16px; border-bottom:1px solid #ccc; padding-bottom:8px;
+    }
+    .preview{ border:none !important; padding:0 !important; color:#000000 !important; }
+    .preview .para-break{height:0.35em !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>จับคู่ประโยคบาลี–ไทย</h1>
+  <p class="sub">ใส่ข้อความสองภาษา จับคู่ช่วงคำที่ตรงกัน แล้วดูผลลัพธ์แบบสลับภาษาได้ทีละประโยค</p>
+
+  <section>
+    <h2>1. ใส่ข้อความ</h2>
+    <div class="two-col">
+      <div>
+        <div class="col-label">ภาษาบาลี</div>
+        <textarea id="paliInput" placeholder="วางข้อความบาลีที่นี่... (ขึ้นบรรทัดใหม่ = ย่อหน้าใหม่)"></textarea>
+      </div>
+      <div>
+        <div class="col-label">คำแปลไทย</div>
+        <textarea id="thaiInput" placeholder="วางคำแปลไทยที่นี่... (ขึ้นบรรทัดใหม่ = ย่อหน้าใหม่)"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <button class="solid" onclick="processTexts()">ประมวลผล</button>
+      <button onclick="loadSample()">โหลดตัวอย่าง</button>
+      <button onclick="cleanInputs()">🧹 Clean data</button>
+    </div>
+  </section>
+
+  <section id="matchSection" style="display:none;">
+    <h2>2. จับคู่ช่วงประโยค <span class="badge" id="pairCount">0 คู่</span></h2>
+    <div class="row">
+      <span class="status" id="statusText">คลิกคำต้นและคำปลายฝั่งบาลี จากนั้นคลิกคำต้นและคำปลายฝั่งไทยที่ตรงกัน </span>
+      <div class="font-controls">
+        <span>ขนาดอักษรไทย</span>
+        <button type="button" onclick="changeThaiFontSize(-1)" aria-label="ย่อขนาดอักษรไทย">A−</button>
+        <span id="thaiFontSizeLabel">18px</span>
+        <button type="button" onclick="changeThaiFontSize(1)" aria-label="ขยายขนาดอักษรไทย">A+</button>
+      </div>
+    </div>
+    <div class="two-col" style="margin-top:10px;">
+      <div>
+        <div class="col-label">บาลี</div>
+        <div class="word-panel" id="paliPanel"></div>
+      </div>
+      <div>
+        <div class="col-label">ไทย</div>
+        <div class="word-panel" id="thaiPanel"></div>
+      </div>
+    </div>
+
+    <!-- แถบเครื่องมือแทรก Tab / บรรทัดใหม่ -->
+    <div class="break-row">
+      <span class="break-target" id="breakTarget">— ยังไม่ได้เลือกคำ —</span>
+      <button type="button" onclick="insertBreak('tab')" title="แทรก Tab หลังคำที่คลิกล่าสุด">⇥ Tab</button>
+      <button type="button" onclick="insertBreak('newline')" title="ขึ้นบรรทัดใหม่หลังคำที่คลิกล่าสุด">↵ ขึ้นบรรทัดใหม่</button>
+      <button type="button" onclick="insertBreak(null)" title="ลบตัวแบ่งหลังคำที่คลิกล่าสุด">✕ ลบตัวแบ่ง</button>
+      <button type="button" onclick="clearAllBreaks()" title="ลบตัวแบ่งทั้งหมด">ลบทั้งหมด</button>
+    </div>
+
     <div class="sticky-actions">
-  <div class="row">
-    <button class="solid" id="confirmBtn" onclick="confirmPair()" disabled>
-  ✓ ยืนยันจับคู่นี้ <small>(Ctrl/⌘ + Enter)</small>
-</button>
-     <button onclick="clearSelection()">ยกเลิกการเลือก</button>
-    <button onclick="undoLastPair()" id="undoBtn" disabled>ลบคู่ล่าสุด</button>
-    <button onclick="resetAllPairs()">ล้างคู่ทั้งหมด</button>
-  </div>
+      <div class="row">
+        <button class="solid" id="confirmBtn" onclick="confirmPair()" disabled>
+          ✓ ยืนยันจับคู่นี้ <small>(Ctrl/⌘ + Enter)</small>
+        </button>
+        <button onclick="clearSelection()">ยกเลิกการเลือก</button>
+        <button onclick="autoAlign()" title="จับคู่ย่อหน้าอัตโนมัติ">⚡ Auto align</button>
+        <button onclick="undoLastPair()" id="undoBtn" disabled>ลบคู่ล่าสุด</button>
+        <button onclick="resetAllPairs()">ล้างคู่ทั้งหมด</button>
+      </div>
+    </div>
+
+    <table class="pairs-table" id="pairsTable" style="display:none;">
+      <thead><tr><th></th><th>บาลี</th><th>ไทย</th><th></th></tr></thead>
+      <tbody id="pairsBody"></tbody>
+    </table>
+    <p class="empty-note" id="noPairsNote">ยังไม่มีคู่ที่จับคู่ไว้</p>
+  </section>
+
+  <section id="previewSection" style="display:none;">
+    <h2>3. ผลลัพธ์ <span class="badge">คลิกที่ข้อความเพื่อสลับภาษา</span></h2>
+    <div id="printTitle" class="print-title"></div>
+    <div class="preview" id="previewArea"></div>
+    <p class="hint">ชี้ (hover) ที่ข้อความที่จับคู่แล้วเพื่อดูคำแปลไทยชั่วคราว เอาเมาส์ออกจะกลับเป็นบาลี ส่วนคลิกจะสลับค้างไว้เป็นไทย คลิกอีกครั้งกลับเป็นบาลี ข้อความที่ยังไม่จับคู่จะแสดงเป็นบาลีเฉยๆ</p>
+
+    <div class="pdf-fields">
+      <div>
+        <div class="col-label">หัวข้อที่แสดงในเอกสาร</div>
+        <input type="text" id="pdfTitle" placeholder="เช่น อรรถกถาธรรมบท เรื่องที่ ๑">
+      </div>
+      <div>
+        <div class="col-label">ชื่อไฟล์ (ดึงจากหัวข้ออัตโนมัติ)</div>
+        <input type="text" id="pdfFilename" placeholder="เช่น pali-thai-01">
+      </div>
+    </div>
+    <p class="hint" id="filenameSyncHint">ชื่อไฟล์จะถูกดึงมาจากหัวข้อเอกสารโดยอัตโนมัติ · แก้ไขเองได้หากต้องการ</p>
+    <div class="row">
+      <button class="solid" onclick="exportPDF()">🖨️ บันทึกเป็น PDF</button>
+      <button onclick="exportHTML()">📄 ส่งออกเป็น HTML</button>
+    </div>
+    <p class="hint">กด "บันทึกเป็น PDF" แล้วเลือก "บันทึกเป็น PDF" ในหน้าต่างพิมพ์ของเบราว์เซอร์ ชื่อไฟล์ที่ตั้งไว้จะถูกใช้เป็นชื่อที่เสนอให้บันทึกโดยอัตโนมัติ</p>
+  </section>
 </div>
-    <table class="pairs-table" id="pairsTable" style="display:none;">  
-      <thead><tr><th></th><th>บาลี</th><th>ไทย</th><th></th></tr></thead>  
-      <tbody id="pairsBody"></tbody>  
-    </table>  
-    <p class="empty-note" id="noPairsNote">ยังไม่มีคู่ที่จับคู่ไว้</p>  
-  </section>  
-  
-  <section id="previewSection" style="display:none;">  
-    <h2>3. ผลลัพธ์ <span class="badge">คลิกที่ข้อความเพื่อสลับภาษา</span></h2>  
-    <div id="printTitle" class="print-title"></div>  
-    <div class="preview" id="previewArea"></div>  
-    <p class="hint">ชี้ (hover) ที่ข้อความที่จับคู่แล้วเพื่อดูคำแปลไทยชั่วคราว เอาเมาส์ออกจะกลับเป็นบาลี ส่วนคลิกจะสลับค้างไว้เป็นไทย คลิกอีกครั้งกลับเป็นบาลี ข้อความที่ยังไม่จับคู่จะแสดงเป็นบาลีเฉยๆ</p>  
-  
-    <div class="pdf-fields">  
-      <div>  
-        <div class="col-label">หัวข้อที่แสดงในเอกสาร</div>  
-        <input type="text" id="pdfTitle" placeholder="เช่น อรรถกถาธรรมบท เรื่องที่ ๑">  
-      </div>  
-      <div>  
-        <div class="col-label">ชื่อไฟล์ (ไม่ต้องใส่ .pdf)</div>  
-        <input type="text" id="pdfFilename" placeholder="เช่น pali-thai-01">  
-      </div>  
-    </div>  
-    <div class="row">  
-      <button class="solid" onclick="exportPDF()">🖨️ บันทึกเป็น PDF</button>  
-      <button onclick="exportHTML()">📄 ส่งออกเป็น HTML</button>  
-    </div>  
-    <p class="hint">กด "บันทึกเป็น PDF" แล้วเลือก "บันทึกเป็น PDF" ในหน้าต่างพิมพ์ของเบราว์เซอร์ ชื่อไฟล์ที่ตั้งไว้จะถูกใช้เป็นชื่อที่เสนอให้บันทึกโดยอัตโนมัติ</p>  
-  </section>  
-</div>  
-  
-<script>  
-let paliWords = [];   // {text, pairId}  
-let thaiWords = [];   // {text, pairId}  
-let pairs = [];        // {id, paliStart, paliEnd, thaiStart, thaiEnd, paliText, thaiText, color}  
-let nextPairId = 1;  
-  
-let curPali = {start:null, end:null};  
-let curThai = {start:null, end:null};  
-  
-const samplePali = "สตฺถา กิเมตฺถ ภิกฺขเว เอตรหิ กถาย นิสินฺนาตฺถ ติ ปุจฺฉิตฺวา อิมาย นาม ภนฺเต ติ วุตฺเต น ภิกฺขเว อิทาเนเวส เอวํ กโรติ ติ วตฺวา อตีตํ อาหริ";  
-const sampleThai = "พระศาสดาตรัสถามว่า ภิกษุทั้งหลาย บัดนี้พวกเธอนั่งสนทนากันด้วยเรื่องอะไร เมื่อภิกษุเหล่านั้นกราบทูลว่า ด้วยเรื่องชื่อนี้ พระเจ้าข้า จึงตรัสว่า ภิกษุทั้งหลาย มิใช่บัดนี้เท่านั้นที่เธอทำเช่นนี้ แล้วทรงนำเรื่องในอดีตมาตรัสเล่า";  
-  
-function loadSample(){  
-  document.getElementById('paliInput').value = samplePali;  
-  document.getElementById('thaiInput').value = sampleThai;  
-  processTexts();  
-}  
-  
-function tokenize(str){  
-  return str.trim().split(/\s+/).filter(Boolean);  
-}  
-  
-function processTexts(){  
-  const p = document.getElementById('paliInput').value;  
-  const t = document.getElementById('thaiInput').value;  
-  if(!p.trim() || !t.trim()){  
-    alert("กรุณาใส่ข้อความทั้งสองช่องก่อนครับ");  
-    return;  
-  }  
-  paliWords = tokenize(p).map(w => ({text:w, pairId:null}));  
-  thaiWords = tokenize(t).map(w => ({text:w, pairId:null}));  
-  pairs = [];  
-  nextPairId = 1;  
-  curPali = {start:null, end:null};  
-  curThai = {start:null, end:null};  
-  document.getElementById('matchSection').style.display = 'block';  
-  document.getElementById('previewSection').style.display = 'block';  
-  render();  
-}  
-  
-function pairColor(id){  
-  const hue = (id * 47) % 360;  
-  return {  
-    bg: `hsl(${hue}, 55%, 88%)`,  
-    bgDark: `hsl(${hue}, 35%, 26%)`,  
-    border: `hsl(${hue}, 45%, 45%)`  
-  };  
-}  
-  
-function currentBg(c){  
-  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches  
-    && document.documentElement.getAttribute('data-theme') !== 'light';  
-  return isDark ? c.bgDark : c.bg;  
-}  
-  
-function paliClick(idx){  
-  if(paliWords[idx].pairId !== null) return;  
-  if(curPali.start === null){  
-    curPali.start = idx; curPali.end = null;  
-  } else if(curPali.end === null){  
-    if(idx === curPali.start){ curPali.end = idx; }  
-    else if(idx > curPali.start){ curPali.end = idx; }  
-    else { curPali.start = idx; }  
-  } else {  
-    curPali.start = idx; curPali.end = null;  
-    curThai = {start:null, end:null};  
-  }  
-  render();  
-}  
-  
-function thaiClick(idx){  
-  if(curPali.start === null || curPali.end === null){  
-    updateStatus("เลือกคำต้นและคำปลายฝั่งบาลีให้ครบก่อนครับ");  
-    return;  
-  }  
-  if(thaiWords[idx].pairId !== null) return;  
-  if(curThai.start === null){  
-    curThai.start = idx; curThai.end = null;  
-  } else if(curThai.end === null){  
-    if(idx === curThai.start){ curThai.end = idx; }  
-    else if(idx > curThai.start){ curThai.end = idx; }  
-    else { curThai.start = idx; }  
-  } else {  
-    curThai.start = idx; curThai.end = null;  
-  }  
-  render();  
-}  
-  
-function confirmPair(){  
-  if(curPali.start===null || curPali.end===null || curThai.start===null || curThai.end===null) return;  
-  const id = nextPairId++;  
-  const color = pairColor(id);  
-  const paliText = paliWords.slice(curPali.start, curPali.end+1).map(w=>w.text).join(' ');  
-  const thaiText = thaiWords.slice(curThai.start, curThai.end+1).map(w=>w.text).join(' ');  
-  for(let i=curPali.start; i<=curPali.end; i++) paliWords[i].pairId = id;  
-  for(let i=curThai.start; i<=curThai.end; i++) thaiWords[i].pairId = id;  
-  pairs.push({id, paliStart:curPali.start, paliEnd:curPali.end, thaiStart:curThai.start, thaiEnd:curThai.end, paliText, thaiText, color});  
-  curPali = {start:null, end:null};  
-  curThai = {start:null, end:null};  
-  render();  
-}  
-  
-function clearSelection(){  
-  curPali = {start:null, end:null};  
-  curThai = {start:null, end:null};  
-  render();  
-}  
-  
-function deletePair(id){  
-  const pair = pairs.find(p => p.id === id);  
-  if(!pair) return;  
-  for(let i=pair.paliStart; i<=pair.paliEnd; i++) paliWords[i].pairId = null;  
-  for(let i=pair.thaiStart; i<=pair.thaiEnd; i++) thaiWords[i].pairId = null;  
-  pairs = pairs.filter(p => p.id !== id);  
-  render();  
-}  
-  
-function undoLastPair(){  
-  if(pairs.length === 0) return;  
-  deletePair(pairs[pairs.length-1].id);  
-}  
-  
-function resetAllPairs(){  
-  if(pairs.length === 0) return;  
-  paliWords.forEach(w => w.pairId = null);  
-  thaiWords.forEach(w => w.pairId = null);  
-  pairs = [];  
-  curPali = {start:null, end:null};  
-  curThai = {start:null, end:null};  
-  render();  
-}  
-  
-function updateStatus(msg){  
-  document.getElementById('statusText').textContent = msg;  
-}  
-  
-function render(){  
-  renderPanel('paliPanel', paliWords, curPali, paliClick);  
-  renderPanel('thaiPanel', thaiWords, curThai, thaiClick);  
-  renderPairsTable();  
-  renderPreview();  
-  
-  document.getElementById('confirmBtn').disabled =  
-    !(curPali.start!==null && curPali.end!==null && curThai.start!==null && curThai.end!==null);  
-  document.getElementById('undoBtn').disabled = pairs.length === 0;  
-  document.getElementById('pairCount').textContent = pairs.length + ' คู่';  
-  
-  if(curPali.start===null){  
-    updateStatus("คลิกคำต้นและคำปลายฝั่งบาลี จากนั้นคลิกคำต้นและคำปลายฝั่งไทยที่ตรงกัน");  
-  } else if(curPali.end===null){  
-    updateStatus("เลือกคำปลายฝั่งบาลี (หรือคลิกคำเดิมซ้ำถ้าเป็นคำเดียว)");  
-  } else if(curThai.start===null){  
-    updateStatus("เลือกคำต้นฝั่งไทยที่ตรงกับช่วงบาลีที่เลือกไว้");  
-  } else if(curThai.end===null){  
-    updateStatus("เลือกคำปลายฝั่งไทย (หรือคลิกคำเดิมซ้ำถ้าเป็นคำเดียว) แล้วกดยืนยัน");  
-  } else {  
-    updateStatus("พร้อมยืนยันจับคู่แล้ว");  
-  }  
-}  
-  
-function renderPanel(panelId, words, sel, clickFn){  
-  const panel = document.getElementById(panelId);  
-  panel.innerHTML = '';  
-  words.forEach((w, idx) => {  
-    const span = document.createElement('span');  
-    span.className = 'w';  
-    span.textContent = w.text;  
-    if(w.pairId !== null){  
-      const c = pairColor(w.pairId);  
-      span.style.background = currentBg(c);  
-      span.style.borderBottom = `2px solid ${c.border}`;  
-      span.classList.add('disabled');  
-    } else {  
-      if(idx === sel.start && sel.end === null) span.classList.add('sel-start');  
-      else if(idx === sel.start) span.classList.add('sel-start');  
-      else if(idx === sel.end) span.classList.add('sel-end');  
-      else if(sel.start!==null && sel.end!==null && idx>sel.start && idx<sel.end) span.classList.add('sel-range');  
-      span.onclick = () => clickFn(idx);  
-    }  
-    panel.appendChild(span);  
-    panel.appendChild(document.createTextNode(' '));  
-  });  
-  if(words.length === 0){  
-    panel.innerHTML = '<span class="empty-note">—</span>';  
-  }  
-}  
-  
-function renderPairsTable(){  
-  const body = document.getElementById('pairsBody');  
-  const table = document.getElementById('pairsTable');  
-  const note = document.getElementById('noPairsNote');  
-  body.innerHTML = '';  
-  if(pairs.length === 0){  
-    table.style.display = 'none';  
-    note.style.display = 'block';  
-    return;  
-  }  
-  table.style.display = 'table';  
-  note.style.display = 'none';  
-  pairs.forEach((p, i) => {  
-    const tr = document.createElement('tr');  
-    const c = p.color;  
-    tr.innerHTML = `  
-      <td><span class="swatch" style="background:${c.border}"></span>${i+1}</td>  
-      <td>${escapeHtml(p.paliText)}</td>  
-      <td>${escapeHtml(p.thaiText)}</td>  
-      <td><button onclick="deletePair(${p.id})">ลบ</button></td>  
-    `;  
-    body.appendChild(tr);  
-  });  
-}  
-  
-function escapeHtml(s){  
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');  
-}  
-  
-function buildPreviewFragment(){  
-  const frag = document.createDocumentFragment();  
-  let i = 0;  
-  while(i < paliWords.length){  
-    const w = paliWords[i];  
-    if(w.pairId === null){  
-      frag.appendChild(document.createTextNode(w.text + ' '));  
-      i++;  
-    } else {  
-      const pid = w.pairId;  
-      let j = i;  
-      while(j < paliWords.length && paliWords[j].pairId === pid) j++;  
-      const pair = pairs.find(p => p.id === pid);  
-      const span = document.createElement('span');  
-      span.className = 'matched';  
-      span.dataset.pairId = pid;  
-      span.dataset.base = 'pali';  
-      span.textContent = pair.paliText;  
-      const showPali = () => { span.textContent = pair.paliText; span.style.color = 'var(--ink)'; };  
-      const showThai = () => { span.textContent = pair.thaiText; span.style.color = 'var(--accent)'; };  
-      span.onmouseenter = () => { showThai(); };  
-      span.onmouseleave = () => {  
-        span.dataset.base === 'pali' ? showPali() : showThai();  
-      };  
-      span.onclick = () => {  
-        span.dataset.base = (span.dataset.base === 'pali') ? 'thai' : 'pali';  
-        span.dataset.base === 'pali' ? showPali() : showThai();  
-      };  
-      frag.appendChild(span);  
-      frag.appendChild(document.createTextNode(' '));  
-      i = j;  
-    }  
-  }  
-  return frag;  
-}  
-  
-function renderPreview(){  
-  const area = document.getElementById('previewArea');  
-  area.innerHTML = '';  
-  if(paliWords.length === 0){  
-    area.innerHTML = '<span class="empty-note">ยังไม่มีข้อความ</span>';  
-    return;  
-  }  
-  area.appendChild(buildPreviewFragment());  
-}  
-  
-function exportPDF(){  
-  if(paliWords.length === 0){  
-    alert("ไม่มีข้อมูลที่จะบันทึกครับ");  
-    return;  
-  }  
-  const titleVal = document.getElementById('pdfTitle').value.trim() || 'ผลลัพธ์การจับคู่บาลี-ไทย';  
-  const fileVal = document.getElementById('pdfFilename').value.trim() || 'pali-thai-result';  
-  
-  document.getElementById('printTitle').textContent = titleVal;  
-  
-  const originalTitle = document.title;  
-  document.title = fileVal;  
-  
-  window.onafterprint = () => {  
-    document.title = originalTitle;  
-    window.onafterprint = null;  
-  };  
-  
-  window.print();  
-}  
-  
-function exportHTML(){  
-  if(paliWords.length === 0){  
-    alert("ไม่มีข้อมูลที่จะส่งออกครับ");  
-    return;  
-  }  
-  const titleVal = document.getElementById('pdfTitle').value.trim() || 'ผลลัพธ์การจับคู่บาลี-ไทย';  
-  const fileVal = document.getElementById('pdfFilename').value.trim() || 'pali-thai-result';  
-  // build export markup with data-pali/data-thai/data-base per matched span (no color, plain text)  
-  const wrapper = document.createElement('div');  
-  wrapper.innerHTML = document.getElementById('previewArea').innerHTML;  
-  wrapper.querySelectorAll('.matched').forEach(span => {  
-    const pid = span.dataset.pairId;  
-    const pair = pairs.find(p => p.id == pid);  
-    span.setAttribute('data-pali', pair.paliText);  
-    span.setAttribute('data-thai', pair.thaiText);  
-    span.setAttribute('data-base', 'pali');  
-    span.textContent = pair.paliText;  
-    span.removeAttribute('style');  
-  });  
-  
-  const finalDoc = `<!DOCTYPE html>  
-<html lang="th">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1">  
-<title>${escapeHtml(titleVal)}</title>  
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">  
-<style>  
-  body{font-family:'Sarabun',sans-serif; max-width:800px; margin:40px auto; padding:0 20px; color:#211c15; background:#faf7f1;}  
-  h1{font-size:1.2rem;}  
-  .preview{font-size:1.18rem; line-height:2.3;}  
-  .matched{cursor:pointer; color:#211c15;}  
-  .matched.is-thai{color:#6b4226;}  
-  .hint{color:#786d5c; font-size:.85rem;}  
-</style>  
-</head>  
-<body>  
-<h1>${escapeHtml(titleVal)}</h1>  
-<div class="preview">${wrapper.innerHTML}</div>  
-<p class="hint">ชี้ที่ข้อความเพื่อดูคำแปลไทยชั่วคราว คลิกเพื่อสลับค้างไว้เป็นไทย คลิกอีกครั้งกลับเป็นบาลี</p>  
-<script>  
-document.querySelectorAll('.matched').forEach(function(span){  
-  var paliText = span.getAttribute('data-pali');  
-  var thaiText = span.getAttribute('data-thai');  
-  span.addEventListener('mouseenter', function(){ span.textContent = thaiText; span.classList.add('is-thai'); });  
-  span.addEventListener('mouseleave', function(){  
-    if(span.getAttribute('data-base') === 'pali'){ span.textContent = paliText; span.classList.remove('is-thai'); }  
-    else { span.textContent = thaiText; span.classList.add('is-thai'); }  
-  });  
-  span.addEventListener('click', function(){  
-    var newBase = span.getAttribute('data-base') === 'pali' ? 'thai' : 'pali';  
-    span.setAttribute('data-base', newBase);  
-    if(newBase === 'pali'){ span.textContent = paliText; span.classList.remove('is-thai'); }  
-    else { span.textContent = thaiText; span.classList.add('is-thai'); }  
-  });  
-});  
-<\/script>  
-</body>  
-</html>`;  
-  
-  const blob = new Blob([finalDoc], {type:'text/html'});  
-  const url = URL.createObjectURL(blob);  
-  const a = document.createElement('a');  
-  a.href = url;  
-  a.download = fileVal + '.html';  
-  a.click();  
-  URL.revokeObjectURL(url);  
-}  
+
+<script>
+let paliWords = [];   // {text, pairId, para, breakAfter}
+let thaiWords = [];   // {text, pairId, para, breakAfter}
+let pairs = [];        // {id, paliStart, paliEnd, thaiStart, thaiEnd, paliText, thaiText, color}
+let nextPairId = 1;
+
+let curPali = {start:null, end:null};
+let curThai = {start:null, end:null};
+
+let activePanel = null;   // 'pali' | 'thai' | null
+let activeIndex = null;
+
+const samplePali = "สตฺถา กิเมตฺถ ภิกฺขเว เอตรหิ กถาย นิสินฺนาตฺถาติ ปุจฺฉิตฺวา\nอิมาย นาม ภนฺเตติ วุตฺเต\nน ภิกฺขเว อิทาเนเวส เอวํ กโรตีติ วตฺวา อตีตํ อาหริ";
+const sampleThai = "พระศาสดาตรัสถามว่า ภิกษุทั้งหลาย บัดนี้พวกเธอนั่งสนทนากันด้วยเรื่องอะไร\nเมื่อภิกษุเหล่านั้นกราบทูลว่า ด้วยเรื่องชื่อนี้ พระเจ้าข้า\nจึงตรัสว่า ภิกษุทั้งหลาย มิใช่บัดนี้เท่านั้นที่เธอทำเช่นนี้ แล้วทรงนำเรื่องในอดีตมาตรัสเล่า";
+
+function loadSample(){
+  document.getElementById('paliInput').value = samplePali;
+  document.getElementById('thaiInput').value = sampleThai;
+  processTexts();
+}
+
+function cleanString(str){
+  return str
+    .replace(/\r\n?/g, '\n')
+    .split('\n')
+    .map(line => line.replace(/\s+/g, ' ').trim())
+    .join('\n');
+}
+
+function cleanInputs(){
+  const pEl = document.getElementById('paliInput');
+  const tEl = document.getElementById('thaiInput');
+  pEl.value = cleanString(pEl.value);
+  tEl.value = cleanString(tEl.value);
+}
+
+function tokenize(str){
+  const words = [];
+  let para = 0;
+  str.replace(/\r\n?/g, '\n').split('\n').forEach(line => {
+    const cleanLine = line.replace(/\s+/g, ' ').trim();
+    if(!cleanLine) return;
+    cleanLine.split(' ').forEach(t => {
+      if(t) words.push({text:t, pairId:null, para:para, breakAfter:null});
+    });
+    para++;
+  });
+  return words;
+}
+
+function makeParaBreak(){
+  const b = document.createElement('span');
+  b.className = 'para-break';
+  b.setAttribute('aria-hidden','true');
+  return b;
+}
+
+function makeTabBreak(){
+  const b = document.createElement('span');
+  b.className = 'tab-break';
+  b.setAttribute('aria-hidden','true');
+  return b;
+}
+
+function processTexts(){
+  const p = document.getElementById('paliInput').value;
+  const t = document.getElementById('thaiInput').value;
+  if(!p.trim() || !t.trim()){
+    alert("กรุณาใส่ข้อความทั้งสองช่องก่อนครับ");
+    return;
+  }
+  paliWords = tokenize(p);
+  thaiWords = tokenize(t);
+  pairs = [];
+  nextPairId = 1;
+  curPali = {start:null, end:null};
+  curThai = {start:null, end:null};
+  activePanel = null;
+  activeIndex = null;
+  document.getElementById('matchSection').style.display = 'block';
+  document.getElementById('previewSection').style.display = 'block';
+  render();
+  applyThaiFontSize();
+}
+
+function pairColor(id){
+  const hue = (id * 47) % 360;
+  return {
+    bg: `hsl(${hue}, 55%, 88%)`,
+    bgDark: `hsl(${hue}, 35%, 26%)`,
+    border: `hsl(${hue}, 45%, 45%)`
+  };
+}
+
+function currentBg(c){
+  const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    && document.documentElement.getAttribute('data-theme') !== 'light';
+  return isDark ? c.bgDark : c.bg;
+}
+
+function paliClick(idx){
+  activePanel = 'pali';
+  activeIndex = idx;
+
+  if(paliWords[idx].pairId !== null){
+    updateBreakTarget();
+    return;
+  }
+  if(curPali.start === null){
+    curPali.start = idx; curPali.end = null;
+  } else if(curPali.end === null){
+    if(idx === curPali.start){ curPali.end = idx; }
+    else if(idx > curPali.start){ curPali.end = idx; }
+    else { curPali.start = idx; }
+  } else {
+    curPali.start = idx; curPali.end = null;
+    curThai = {start:null, end:null};
+  }
+  render();
+}
+
+function thaiClick(idx){
+  activePanel = 'thai';
+  activeIndex = idx;
+
+  if(thaiWords[idx].pairId !== null){
+    updateBreakTarget();
+    return;
+  }
+  if(curPali.start === null || curPali.end === null){
+    updateStatus("เลือกคำต้นและคำปลายฝั่งบาลีให้ครบก่อนครับ");
+    return;
+  }
+  if(curThai.start === null){
+    curThai.start = idx; curThai.end = null;
+  } else if(curThai.end === null){
+    if(idx === curThai.start){ curThai.end = idx; }
+    else if(idx > curThai.start){ curThai.end = idx; }
+    else { curThai.start = idx; }
+  } else {
+    curThai.start = idx; curThai.end = null;
+  }
+  render();
+}
+
+function insertBreak(type){
+  if(activePanel === null || activeIndex === null){
+    alert("กรุณาคลิกคำในแผงบาลีหรือไทยก่อน เพื่อกำหนดตำแหน่งที่จะแทรก");
+    return;
+  }
+  const words = activePanel === 'pali' ? paliWords : thaiWords;
+  if(activeIndex >= words.length) return;
+  words[activeIndex].breakAfter = type;
+  render();
+}
+
+function clearAllBreaks(){
+  paliWords.forEach(w => w.breakAfter = null);
+  thaiWords.forEach(w => w.breakAfter = null);
+  render();
+}
+
+function updateBreakTarget(){
+  const el = document.getElementById('breakTarget');
+  if(!el) return;
+  if(activePanel === null || activeIndex === null){
+    el.textContent = '— ยังไม่ได้เลือกคำ —';
+    return;
+  }
+  const words = activePanel === 'pali' ? paliWords : thaiWords;
+  if(activeIndex >= words.length){
+    el.textContent = '— ยังไม่ได้เลือกคำ —';
+    return;
+  }
+  const w = words[activeIndex];
+  const label = activePanel === 'pali' ? 'บาลี' : 'ไทย';
+  let suffix = '';
+  if(w.breakAfter === 'tab') suffix = ' <strong>[Tab]</strong>';
+  else if(w.breakAfter === 'newline') suffix = ' <strong>[↵]</strong>';
+  el.innerHTML = `แทรกหลังคำ (${label}): "<strong>${escapeHtml(w.text)}</strong>"${suffix}`;
+}
+
+function confirmPair(){
+  if(curPali.start===null || curPali.end===null || curThai.start===null || curThai.end===null) return;
+  const id = nextPairId++;
+  const color = pairColor(id);
+  const paliText = paliWords.slice(curPali.start, curPali.end+1).map(w=>w.text).join(' ');
+  const thaiText = thaiWords.slice(curThai.start, curThai.end+1).map(w=>w.text).join(' ');
+  for(let i=curPali.start; i<=curPali.end; i++) paliWords[i].pairId = id;
+  for(let i=curThai.start; i<=curThai.end; i++) thaiWords[i].pairId = id;
+  pairs.push({id, paliStart:curPali.start, paliEnd:curPali.end, thaiStart:curThai.start, thaiEnd:curThai.end, paliText, thaiText, color});
+  curPali = {start:null, end:null};
+  curThai = {start:null, end:null};
+  render();
+}
+
+function clearSelection(){
+  curPali = {start:null, end:null};
+  curThai = {start:null, end:null};
+  render();
+}
+
+function deletePair(id){
+  const pair = pairs.find(p => p.id === id);
+  if(!pair) return;
+  for(let i=pair.paliStart; i<=pair.paliEnd; i++) paliWords[i].pairId = null;
+  for(let i=pair.thaiStart; i<=pair.thaiEnd; i++) thaiWords[i].pairId = null;
+  pairs = pairs.filter(p => p.id !== id);
+  render();
+}
+
+function undoLastPair(){
+  if(pairs.length === 0) return;
+  deletePair(pairs[pairs.length-1].id);
+}
+
+function resetAllPairs(){
+  if(pairs.length === 0) return;
+  paliWords.forEach(w => w.pairId = null);
+  thaiWords.forEach(w => w.pairId = null);
+  pairs = [];
+  curPali = {start:null, end:null};
+  curThai = {start:null, end:null};
+  render();
+}
+
+function groupByPara(words){
+  const paras = [];
+  if(words.length === 0) return paras;
+  let currentPara = words[0].para;
+  let start = 0;
+  for(let i = 1; i < words.length; i++){
+    if(words[i].para !== currentPara){
+      paras.push({start, end: i-1});
+      currentPara = words[i].para;
+      start = i;
+    }
+  }
+  paras.push({start, end: words.length - 1});
+  return paras;
+}
+
+function autoAlign(){
+  if(paliWords.length === 0 || thaiWords.length === 0){
+    alert("กรุณาประมวลผลข้อความก่อนครับ");
+    return;
+  }
+  const paliParas = groupByPara(paliWords);
+  const thaiParas = groupByPara(thaiWords);
+  if(paliParas.length === 0 || thaiParas.length === 0) return;
+
+  const n = Math.min(paliParas.length, thaiParas.length);
+
+  if(pairs.length > 0){
+    if(!confirm('มีการจับคู่อยู่แล้ว ต้องการล้างและจัดคู่ใหม่หรือไม่?')) return;
+  }
+  if(paliParas.length !== thaiParas.length){
+    if(!confirm(`บาลีมี ${paliParas.length} ย่อหน้า ไทยมี ${thaiParas.length} ย่อหน้า\nจะจัดคู่ ${n} คู่แรก ต้องการดำเนินการต่อหรือไม่?`)) return;
+  }
+
+  paliWords.forEach(w => w.pairId = null);
+  thaiWords.forEach(w => w.pairId = null);
+  pairs = [];
+  nextPairId = 1;
+
+  for(let i = 0; i < n; i++){
+    const pp = paliParas[i];
+    const tp = thaiParas[i];
+    const id = nextPairId++;
+    const color = pairColor(id);
+    const paliText = paliWords.slice(pp.start, pp.end+1).map(w=>w.text).join(' ');
+    const thaiText = thaiWords.slice(tp.start, tp.end+1).map(w=>w.text).join(' ');
+    for(let j = pp.start; j <= pp.end; j++) paliWords[j].pairId = id;
+    for(let j = tp.start; j <= tp.end; j++) thaiWords[j].pairId = id;
+    pairs.push({id, paliStart:pp.start, paliEnd:pp.end, thaiStart:tp.start, thaiEnd:tp.end, paliText, thaiText, color});
+  }
+
+  curPali = {start:null, end:null};
+  curThai = {start:null, end:null};
+  render();
+}
+
+function updateStatus(msg){
+  document.getElementById('statusText').textContent = msg;
+}
+
+function render(){
+  renderPanel('paliPanel', paliWords, curPali, paliClick);
+  renderPanel('thaiPanel', thaiWords, curThai, thaiClick);
+  renderPairsTable();
+  renderPreview();
+  updateBreakTarget();
+
+  document.getElementById('confirmBtn').disabled =
+    !(curPali.start!==null && curPali.end!==null && curThai.start!==null && curThai.end!==null);
+  document.getElementById('undoBtn').disabled = pairs.length === 0;
+  document.getElementById('pairCount').textContent = pairs.length + ' คู่';
+
+  if(curPali.start===null){
+    updateStatus("คลิกคำต้นและคำปลายฝั่งบาลี จากนั้นคลิกคำต้นและคำปลายฝั่งไทยที่ตรงกัน");
+  } else if(curPali.end===null){
+    updateStatus("เลือกคำปลายฝั่งบาลี (หรือคลิกคำเดิมซ้ำถ้าเป็นคำเดียว)");
+  } else if(curThai.start===null){
+    updateStatus("เลือกคำต้นฝั่งไทยที่ตรงกับช่วงบาลีที่เลือกไว้");
+  } else if(curThai.end===null){
+    updateStatus("เลือกคำปลายฝั่งไทย (หรือคลิกคำเดิมซ้ำถ้าเป็นคำเดียว) แล้วกดยืนยัน");
+  } else {
+    updateStatus("พร้อมยืนยันจับคู่แล้ว");
+  }
+}
+
+function renderPanel(panelId, words, sel, clickFn){
+  const panel = document.getElementById(panelId);
+  panel.innerHTML = '';
+  let lastPara = null;
+  let suppressAutoBreak = false;
+
+  words.forEach((w, idx) => {
+    // ขึ้นย่อหน้าอัตโนมัติจากข้อมูลต้นฉบับ
+    if(!suppressAutoBreak && lastPara !== null && w.para !== lastPara){
+      panel.appendChild(makeParaBreak());
+    }
+    suppressAutoBreak = false;
+    lastPara = w.para;
+
+    const span = document.createElement('span');
+    span.className = 'w';
+    span.textContent = w.text;
+
+    if(w.pairId !== null){
+      const c = pairColor(w.pairId);
+      span.style.background = currentBg(c);
+      span.style.borderBottom = `2px solid ${c.border}`;
+      span.classList.add('disabled');
+    } else {
+      if(idx === sel.start) span.classList.add('sel-start');
+      else if(idx === sel.end) span.classList.add('sel-end');
+      else if(sel.start!==null && sel.end!==null && idx>sel.start && idx<sel.end) span.classList.add('sel-range');
+    }
+
+    span.onclick = () => clickFn(idx);
+
+    panel.appendChild(span);
+    panel.appendChild(document.createTextNode(' '));
+
+    // Manual break หลังคำนี้
+    if(w.breakAfter === 'tab'){
+      panel.appendChild(makeTabBreak());
+    } else if(w.breakAfter === 'newline'){
+      panel.appendChild(makeParaBreak());
+      suppressAutoBreak = true;
+    }
+  });
+
+  if(words.length === 0){
+    panel.innerHTML = '<span class="empty-note">—</span>';
+  }
+}
+
+function renderPairsTable(){
+  const body = document.getElementById('pairsBody');
+  const table = document.getElementById('pairsTable');
+  const note = document.getElementById('noPairsNote');
+  body.innerHTML = '';
+  if(pairs.length === 0){
+    table.style.display = 'none';
+    note.style.display = 'block';
+    return;
+  }
+  table.style.display = 'table';
+  note.style.display = 'none';
+  pairs.forEach((p, i) => {
+    const tr = document.createElement('tr');
+    const c = p.color;
+    tr.innerHTML = `
+      <td><span class="swatch" style="background:${c.border}"></span>${i+1}</td>
+      <td>${escapeHtml(p.paliText)}</td>
+      <td>${escapeHtml(p.thaiText)}</td>
+      <td><button onclick="deletePair(${p.id})">ลบ</button></td>
+    `;
+    body.appendChild(tr);
+  });
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function buildPreviewFragment(){
+  const frag = document.createDocumentFragment();
+  let i = 0;
+  let lastPara = null;
+  let suppressAutoBreak = false;
+
+  while(i < paliWords.length){
+    const w = paliWords[i];
+
+    if(!suppressAutoBreak && lastPara !== null && w.para !== lastPara){
+      frag.appendChild(makeParaBreak());
+    }
+    suppressAutoBreak = false;
+    lastPara = w.para;
+
+    if(w.pairId === null){
+      frag.appendChild(document.createTextNode(w.text + ' '));
+      if(w.breakAfter === 'tab'){
+        frag.appendChild(makeTabBreak());
+      } else if(w.breakAfter === 'newline'){
+        frag.appendChild(makeParaBreak());
+        suppressAutoBreak = true;
+      }
+      i++;
+    } else {
+      const pid = w.pairId;
+      let j = i;
+      while(j < paliWords.length && paliWords[j].pairId === pid) j++;
+      const pair = pairs.find(p => p.id === pid);
+      const span = document.createElement('span');
+      span.className = 'matched';
+      span.dataset.pairId = pid;
+      span.dataset.base = 'pali';
+      span.textContent = pair.paliText;
+      const showPali = () => { span.textContent = pair.paliText; span.style.color = 'var(--ink)'; };
+      const showThai = () => { span.textContent = pair.thaiText; span.style.color = 'var(--thai-text)'; };
+      span.onmouseenter = () => { showThai(); };
+      span.onmouseleave = () => {
+        span.dataset.base === 'pali' ? showPali() : showThai();
+      };
+      span.onclick = () => {
+        span.dataset.base = (span.dataset.base === 'pali') ? 'thai' : 'pali';
+        span.dataset.base === 'pali' ? showPali() : showThai();
+      };
+      frag.appendChild(span);
+      frag.appendChild(document.createTextNode(' '));
+
+      lastPara = paliWords[j-1].para;
+      const lastW = paliWords[j-1];
+      if(lastW.breakAfter === 'tab'){
+        frag.appendChild(makeTabBreak());
+      } else if(lastW.breakAfter === 'newline'){
+        frag.appendChild(makeParaBreak());
+        suppressAutoBreak = true;
+      }
+      i = j;
+    }
+  }
+  return frag;
+}
+
+function renderPreview(){
+  const area = document.getElementById('previewArea');
+  area.innerHTML = '';
+  if(paliWords.length === 0){
+    area.innerHTML = '<span class="empty-note">ยังไม่มีข้อความ</span>';
+    return;
+  }
+  area.appendChild(buildPreviewFragment());
+}
+
+/* ══════════════════════════════════════════════════════════
+   ซิงค์ชื่อไฟล์กับหัวข้อเอกสาร
+   ══════════════════════════════════════════════════════════ */
+let filenameManuallyEdited = false;
+
+function sanitizeFilename(str){
+  return String(str || '')
+    .replace(/[\\/:*?"<>|\n\r\t]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function syncFilenameFromTitle(force){
+  const titleEl = document.getElementById('pdfTitle');
+  const fileEl  = document.getElementById('pdfFilename');
+  if(!titleEl || !fileEl) return;
+  if(!force && filenameManuallyEdited) return;
+  fileEl.value = sanitizeFilename(titleEl.value);
+}
+
+function setupFilenameSync(){
+  const titleEl = document.getElementById('pdfTitle');
+  const fileEl  = document.getElementById('pdfFilename');
+  const hintEl  = document.getElementById('filenameSyncHint');
+  if(!titleEl || !fileEl) return;
+
+  titleEl.addEventListener('input', () => {
+    syncFilenameFromTitle(false);
+    updateSyncHint();
+  });
+
+  fileEl.addEventListener('input', () => {
+    if(fileEl.value.trim() !== sanitizeFilename(titleEl.value)){
+      filenameManuallyEdited = true;
+    } else {
+      filenameManuallyEdited = false;
+    }
+    updateSyncHint();
+  });
+
+  function updateSyncHint(){
+    if(!hintEl) return;
+    if(filenameManuallyEdited){
+      hintEl.innerHTML = 'ชื่อไฟล์ถูกแก้ไขเอง · <a href="#" onclick="resyncFilename(event)" style="color:var(--accent);text-decoration:underline;">กดเพื่อซิงค์กับหัวข้ออีกครั้ง</a>';
+    } else {
+      hintEl.textContent = 'ชื่อไฟล์จะถูกดึงมาจากหัวข้อเอกสารโดยอัตโนมัติ · แก้ไขเองได้หากต้องการ';
+    }
+  }
+
+  window.updateSyncHint = updateSyncHint;
+}
+
+function resyncFilename(ev){
+  if(ev) ev.preventDefault();
+  filenameManuallyEdited = false;
+  syncFilenameFromTitle(true);
+  if(typeof window.updateSyncHint === 'function') window.updateSyncHint();
+}
+
+function exportPDF(){
+  if(paliWords.length === 0){
+    alert("ไม่มีข้อมูลที่จะบันทึกครับ");
+    return;
+  }
+  syncFilenameFromTitle(false);
+
+  const titleVal = document.getElementById('pdfTitle').value.trim() || 'ผลลัพธ์การจับคู่บาลี-ไทย';
+  const fileVal  = document.getElementById('pdfFilename').value.trim() || titleVal || 'pali-thai-result';
+
+  document.getElementById('printTitle').textContent = titleVal;
+
+  const originalTitle = document.title;
+  document.title = fileVal;
+
+  window.onafterprint = () => {
+    document.title = originalTitle;
+    window.onafterprint = null;
+  };
+
+  window.print();
+}
+
+function exportHTML(){
+  if(paliWords.length === 0){
+    alert("ไม่มีข้อมูลที่จะส่งออกครับ");
+    return;
+  }
+  syncFilenameFromTitle(false);
+
+  const titleVal = document.getElementById('pdfTitle').value.trim() || 'ผลลัพธ์การจับคู่บาลี-ไทย';
+  const fileVal  = document.getElementById('pdfFilename').value.trim() || titleVal || 'pali-thai-result';
+
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = document.getElementById('previewArea').innerHTML;
+  wrapper.querySelectorAll('.matched').forEach(span => {
+    const pid = span.dataset.pairId;
+    const pair = pairs.find(p => p.id == pid);
+    span.setAttribute('data-pali', pair.paliText);
+    span.setAttribute('data-thai', pair.thaiText);
+    span.setAttribute('data-base', 'pali');
+    span.textContent = pair.paliText;
+    span.removeAttribute('style');
+  });
+
+  const finalDoc = `<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${escapeHtml(titleVal)}</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Sarabun',sans-serif; max-width:800px; margin:40px auto; padding:0 20px; color:#211c15; background:#faf7f1;}
+  h1{font-size:1.2rem;}
+  .preview{font-size:1.08rem; line-height:1.85;}
+  .matched{cursor:pointer; color:#211c15;}
+  .matched.is-thai{color:#1f6b66;}
+  .para-break{display:block; height:0.35em; line-height:0; font-size:0;}
+  .tab-break{display:inline-block; width:1.5em; height:0.01em; vertical-align:baseline;}
+  .hint{color:#786d5c; font-size:.85rem;}
+</style>
+</head>
+<body>
+<h1>${escapeHtml(titleVal)}</h1>
+<div class="preview">${wrapper.innerHTML}</div>
+<p class="hint">ชี้ที่ข้อความเพื่อดูคำแปลไทยชั่วคราว คลิกเพื่อสลับค้างไว้เป็นไทย คลิกอีกครั้งกลับเป็นบาลี</p>
+<script>
+document.querySelectorAll('.matched').forEach(function(span){
+  var paliText = span.getAttribute('data-pali');
+  var thaiText = span.getAttribute('data-thai');
+  span.addEventListener('mouseenter', function(){ span.textContent = thaiText; span.classList.add('is-thai'); });
+  span.addEventListener('mouseleave', function(){
+    if(span.getAttribute('data-base') === 'pali'){ span.textContent = paliText; span.classList.remove('is-thai'); }
+    else { span.textContent = thaiText; span.classList.add('is-thai'); }
+  });
+  span.addEventListener('click', function(){
+    var newBase = span.getAttribute('data-base') === 'pali' ? 'thai' : 'pali';
+    span.setAttribute('data-base', newBase);
+    if(newBase === 'pali'){ span.textContent = paliText; span.classList.remove('is-thai'); }
+    else { span.textContent = thaiText; span.classList.add('is-thai'); }
+  });
+});
+<\/script>
+</body>
+</html>`;
+
+  const blob = new Blob([finalDoc], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileVal + '.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 document.addEventListener('keydown', (event) => {
   const isConfirmShortcut = (event.ctrlKey || event.metaKey) && event.key === 'Enter';
-
   if (isConfirmShortcut) {
     const confirmBtn = document.getElementById('confirmBtn');
-
-    // ยืนยันได้เฉพาะเมื่อปุ่มพร้อมใช้งาน
     if (confirmBtn && !confirmBtn.disabled) {
       event.preventDefault();
       confirmPair();
     }
   }
 });
-</script>  
-</body>  
-</html>  
-  
+
+let thaiFontSize = Number(localStorage.getItem('thaiFontSize')) || 18;
+
+function applyThaiFontSize() {
+  const thaiPanel = document.getElementById('thaiPanel');
+  const label = document.getElementById('thaiFontSizeLabel');
+  if (thaiPanel) {
+    thaiPanel.style.setProperty('--thai-font-size', `${thaiFontSize}px`);
+  }
+  if (label) {
+    label.textContent = `${thaiFontSize}px`;
+  }
+}
+
+function changeThaiFontSize(delta) {
+  const minSize = 12;
+  const maxSize = 32;
+  thaiFontSize = Math.max(minSize, Math.min(maxSize, thaiFontSize + delta));
+  localStorage.setItem('thaiFontSize', thaiFontSize);
+  applyThaiFontSize();
+}
+
+applyThaiFontSize();
+setupFilenameSync();
+</script>
+</body>
+</html>
