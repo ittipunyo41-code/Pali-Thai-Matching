@@ -29,6 +29,10 @@
   
   *{box-sizing:border-box;}
   html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  html, body {
+  overscroll-behavior-y: contain; /* ป้องกันการดึงรีเฟรชและเอฟเฟกต์เด้งเกินขอบเฉพาะแนวตั้ง */
+  /* หรือใช้ overscroll-behavior: none; หากต้องการปิดการ overscroll ทั้งแนวตั้งและแนวนอน */
+  }
   body{
     font-family:'Sarabun',sans-serif; background:var(--paper); color:var(--ink);
     margin:0; padding:20px; padding-top:calc(20px + env(safe-area-inset-top,0px));
