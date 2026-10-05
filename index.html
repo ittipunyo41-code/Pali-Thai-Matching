@@ -7,24 +7,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#faf7f1; --paper-raised:#ffffff; --ink:#211c15; --ink-soft:#786d5c;
-    --rule:#ddd2bd; --accent:#6b4226; --accent-soft:#efe3d3;--thai-text:#1f6b66;
-    --select-strong:#1a73e8; --select-strong-text:#ffffff;
-    --select-soft:#d2e3fc; --select-hover:#efe7da;
+    color-scheme:light;
+    --paper:#f5f8fc; --paper-raised:#ffffff; --ink:#243247; --ink-soft:#64748b;
+    --rule:#dce5ef; --accent:#3973b9; --accent-soft:#edf4fc;--thai-text:#315f91;
+    --select-strong:#3973b9; --select-strong-text:#ffffff;
+    --select-soft:#dceafb; --select-hover:#edf4fc;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --paper:#1b1712; --paper-raised:#26211a; --ink:#f1eade; --ink-soft:#b8ab93;
-      --rule:#4a4030; --accent:#e0b587; --accent-soft:#3a2f22;
-      --select-strong:#5b9dfa; --select-strong-text:#0c1420;
-      --select-soft:#233553; --select-hover:#332a1c;
+      color-scheme:dark;
+      --paper:#172131; --paper-raised:#202d40; --ink:#e7eef8; --ink-soft:#aab8cb;
+      --rule:#35465c; --accent:#8bb8ed; --accent-soft:#273952;--thai-text:#a9c9ef;
+      --select-strong:#6fa5e5; --select-strong-text:#101b2b;
+      --select-soft:#2a4261; --select-hover:#293b53;
     }
   }
   :root[data-theme="dark"]{
-    --paper:#1b1712; --paper-raised:#26211a; --ink:#f1eade; --ink-soft:#b8ab93;
-    --rule:#4a4030; --accent:#e0b587; --accent-soft:#3a2f22;--thai-text:#7ec8bf;
-    --select-strong:#5b9dfa; --select-strong-text:#0c1420;
-    --select-soft:#233553; --select-hover:#332a1c;
+    color-scheme:dark;
+    --paper:#172131; --paper-raised:#202d40; --ink:#e7eef8; --ink-soft:#aab8cb;
+    --rule:#35465c; --accent:#8bb8ed; --accent-soft:#273952;--thai-text:#a9c9ef;
+    --select-strong:#6fa5e5; --select-strong-text:#101b2b;
+    --select-soft:#2a4261; --select-hover:#293b53;
   }
   
   *{box-sizing:border-box;}
@@ -34,55 +37,58 @@
   }
   body{
     font-family:'Sarabun',sans-serif; background:var(--paper); color:var(--ink);
-    margin:0; padding:20px; padding-top:calc(20px + env(safe-area-inset-top,0px));
-    padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));
+    margin:0; padding:24px; padding-top:calc(24px + env(safe-area-inset-top,0px));
+    padding-bottom:calc(24px + env(safe-area-inset-bottom,0px)); line-height:1.55;
   }
-  .wrap{max-width:1000px; margin:0 auto;}
-  h1{font-size:1.35rem; font-weight:700; margin:0 0 4px;}
-  .sub{color:var(--ink-soft); font-size:.92rem; margin:0 0 22px;}
+  .wrap{max-width:1080px; margin:0 auto;}
+  h1{font-size:clamp(1.3rem, 2.4vw, 1.65rem); font-weight:700; letter-spacing:-.02em; margin:0 0 4px;}
+  .sub{color:var(--ink-soft); font-size:.94rem; margin:0 0 22px;}
   section{
-    background:var(--paper-raised); border:1px solid var(--rule); border-radius:10px;
-    padding:18px; margin-bottom:18px;
+    background:var(--paper-raised); border:1px solid var(--rule); border-radius:14px;
+    padding:20px; margin-bottom:16px; box-shadow:0 3px 12px rgba(31,54,82,.035);
   }
-  h2{font-size:.98rem; font-weight:700; margin:0 0 12px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
-  .badge{font-size:.78rem; font-weight:500; color:var(--ink-soft); background:var(--accent-soft); padding:3px 9px; border-radius:20px;}
+  h2{font-size:1rem; font-weight:700; margin:0 0 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+  .badge{font-size:.78rem; font-weight:500; color:var(--ink-soft); background:var(--accent-soft); padding:3px 10px; border-radius:20px;}
   
   /* Textarea & Toolbar styles */
-  .textarea-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 6px; flex-wrap: wrap; gap: 8px; }
-  .col-label{font-size:.82rem; font-weight:600; color:var(--ink-soft); margin-bottom:0;}
+  .textarea-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+  .col-label{display:block; font-size:.82rem; font-weight:600; color:var(--ink-soft); margin-bottom:0;}
   .counter { font-weight: 400; font-size: 0.75rem; color: var(--ink-soft); background: var(--paper); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--rule); margin-left: 6px; display: inline-block; }
-  .textarea-tools { display: flex; gap: 4px; }
-  .textarea-tools button { font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; margin: 0; }
+  .textarea-tools { display: flex; gap: 5px; flex-wrap:wrap; }
+  .textarea-tools button { font-size: 0.75rem; padding: 4px 9px; border-radius: 999px; margin: 0; }
   
   textarea{
     width:100%; min-height:120px; font-family:'Sarabun',sans-serif; font-size:1.02rem;
-    padding:10px; border:1px solid var(--rule); border-radius:6px; background:var(--paper);
-    color:var(--ink); resize:none; line-height:1.6; overflow:hidden;
+    padding:10px 12px; border:1px solid var(--rule); border-radius:9px; background:var(--paper);
+    color:var(--ink); resize:none; line-height:1.65; overflow:hidden; transition:border-color .15s ease, box-shadow .15s ease;
   }
-  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
-  @media (max-width:640px){ .two-col{grid-template-columns:1fr;} }
+  .two-col{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px;}
+  @media (max-width:640px){ .two-col{grid-template-columns:minmax(0,1fr);} }
   
   button{
     font-family:'Sarabun',sans-serif; font-size:.88rem; font-weight:600; padding:8px 14px;
-    border:1px solid var(--accent); border-radius:6px; background:transparent; color:var(--accent);
-    cursor:pointer; transition: all 0.15s ease;
+    border:1px solid var(--rule); border-radius:999px; background:var(--paper-raised); color:var(--ink);
+    cursor:pointer; transition:background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
   }
-  button:hover:not(:disabled){background:var(--accent-soft);}
+  button:hover:not(:disabled){background:var(--accent-soft); border-color:var(--accent); color:var(--accent);}
   button:disabled{opacity:.35; cursor:not-allowed;}
-  button.solid{background:var(--accent); color:var(--paper-raised);}
-  button.solid:hover:not(:disabled){opacity:.88; background:var(--accent);}
+  button.solid{background:var(--accent); border-color:var(--accent); color:#fff;}
+  button.solid:hover:not(:disabled){background:#2d619f; border-color:#2d619f; color:#fff;}
+  :where(button, input, textarea, a, .w, .matched):focus-visible{outline:3px solid color-mix(in srgb, var(--select-strong) 35%, transparent); outline-offset:2px;}
+  input[type="text"]{font-family:'Sarabun',sans-serif; color:var(--ink); background:var(--paper); border:1px solid var(--rule); border-radius:9px; padding:8px 10px; transition:border-color .15s ease, box-shadow .15s ease;}
+  input[type="text"]:focus, textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent); outline:none;}
   .row{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; align-items:center;}
   .status{font-size:.86rem; color:var(--ink-soft); flex:1 1 220px;}
 
   .word-panel{
-    border:1px solid var(--rule); border-radius:10px;
+    border:1px solid var(--rule); border-radius:10px; background:var(--paper);
     padding:14px 16px; min-height:110px;
-    line-height:1.9; font-size:1.02rem; overflow-x:auto;
+    line-height:1.85; font-size:1.02rem; overflow-x:auto;
     word-break:normal; overflow-wrap:break-word;
   }
   .w{
-    display:inline; padding:3px 4px; margin:0 -4px;
-    border-radius:4px; cursor:pointer; line-height:inherit;
+    display:inline; padding:2px 4px; margin:0 -4px;
+    border-radius:5px; cursor:pointer; line-height:inherit;
     transition: background-color .1s ease, color .1s ease;
   }
   .w:not(.disabled):hover{ background:var(--select-hover); }
@@ -102,7 +108,7 @@
   .empty-note{color:var(--ink-soft); font-size:.88rem; font-style:italic;}
 
   .preview{
-    border:1px solid var(--rule); border-radius:8px; padding:18px;
+    border:1px solid var(--rule); border-radius:10px; padding:18px; background:var(--paper);
     font-size:1.08rem; line-height:1.85; overflow-x:auto;
   }
   .preview .matched{
@@ -124,7 +130,7 @@
   .sticky-actions {
     position: sticky; bottom: 0; z-index: 10; margin-top: 10px;
     padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
-    background: var(--paper); border-top: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--paper-raised) 94%, transparent); border-top: 1px solid var(--rule);
   }
 
   #paliPanel { --pali-font-size: 20px; font-size: var(--pali-font-size); }
@@ -134,16 +140,25 @@
   .font-group { display: flex; align-items: center; gap: 8px; }
   .font-group span:first-child { color: var(--ink-soft); font-size: .84rem; }
 
-  .break-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; padding: 8px 10px; background: var(--accent-soft); border-radius: 6px; font-size: .86rem; }
+  .break-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; padding: 9px 10px; background: var(--accent-soft); border-radius: 9px; font-size: .86rem; }
   .break-target { flex: 1 1 180px; color: var(--ink-soft); font-size: .84rem; }
   .break-target strong { color: var(--ink); font-weight: 600; }
 
   @media (max-width:640px){ .pdf-fields{grid-template-columns:1fr;} }
   .pdf-fields input{
-    width:100%; font-family:'Sarabun',sans-serif; font-size:.95rem; padding:8px 10px;
-    border:1px solid var(--rule); border-radius:6px; background:var(--paper); color:var(--ink);
+    width:100%; font-size:.95rem;
   }
   .print-title{display:none;}
+
+  @media (max-width:640px){
+    body{padding:14px; padding-top:calc(14px + env(safe-area-inset-top,0px)); padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));}
+    section{padding:15px; border-radius:12px;}
+    .textarea-header{align-items:flex-start;}
+    .sticky-actions{margin-left:-15px; margin-right:-15px; padding-left:15px; padding-right:15px;}
+    .pairs-table{display:block; overflow-x:auto; white-space:nowrap;}
+    .pairs-table td:nth-child(2), .pairs-table td:nth-child(3){white-space:normal; min-width:140px;}
+    .preview{padding:14px;}
+  }
 
   @media print{
     @page{ size:A4; margin:20mm; }
@@ -179,7 +194,7 @@
     <div class="two-col">
       <div>
         <div class="textarea-header">
-          <div class="col-label">ภาษาบาลี <span class="counter" id="paliCount">0 คำ</span></div>
+          <label class="col-label" for="paliInput">ภาษาบาลี <span class="counter" id="paliCount">0 คำ</span></label>
           <div class="textarea-tools">
             <button type="button" onclick="clearText('paliInput')" title="ลบข้อความทั้งหมดทิ้ง">🗑️ ลบทั้งหมด</button>
             <button type="button" onclick="copyText('paliInput')" title="คัดลอกข้อความ">📋 คัดลอก</button>
@@ -190,7 +205,7 @@
       </div>
       <div>
         <div class="textarea-header">
-          <div class="col-label">คำแปลไทย <span class="counter" id="thaiCount">0 คำ</span></div>
+          <label class="col-label" for="thaiInput">คำแปลไทย <span class="counter" id="thaiCount">0 คำ</span></label>
           <div class="textarea-tools">
             <button type="button" onclick="clearText('thaiInput')" title="ลบข้อความทั้งหมดทิ้ง">🗑️ ลบทั้งหมด</button>
             <button type="button" onclick="copyText('thaiInput')" title="คัดลอกข้อความ">📋 คัดลอก</button>
@@ -229,11 +244,11 @@
     <div class="two-col" style="margin-top:10px;">
       <div>
         <div class="col-label">บาลี</div>
-        <div class="word-panel" id="paliPanel"></div>
+        <div class="word-panel" id="paliPanel" role="group" aria-label="เลือกช่วงคำภาษาบาลี"></div>
       </div>
       <div>
         <div class="col-label">ไทย</div>
-        <div class="word-panel" id="thaiPanel"></div>
+        <div class="word-panel" id="thaiPanel" role="group" aria-label="เลือกช่วงคำแปลภาษาไทย"></div>
       </div>
     </div>
 
@@ -265,11 +280,11 @@
 
     <div class="pdf-fields" style="margin-top:18px; padding-top:14px; border-top:1px solid var(--rule);">
       <div>
-        <div class="col-label">หัวข้อที่แสดงในเอกสาร (ซ้าย-ขวา)</div>
+        <label class="col-label" for="matchPdfTitle">หัวข้อที่แสดงในเอกสาร (ซ้าย-ขวา)</label>
         <input type="text" id="matchPdfTitle" placeholder="เช่น อรรถกถาธรรมบท เรื่องที่ ๑">
       </div>
       <div>
-        <div class="col-label">ชื่อไฟล์</div>
+        <label class="col-label" for="matchPdfFilename">ชื่อไฟล์</label>
         <input type="text" id="matchPdfFilename" placeholder="เช่น pali-thai-01-match">
       </div>
     </div>
@@ -287,11 +302,11 @@
 
     <div class="pdf-fields">
       <div>
-        <div class="col-label">หัวข้อที่แสดงในเอกสาร</div>
+        <label class="col-label" for="pdfTitle">หัวข้อที่แสดงในเอกสาร</label>
         <input type="text" id="pdfTitle" placeholder="เช่น อรรถกถาธรรมบท เรื่องที่ ๑">
       </div>
       <div>
-        <div class="col-label">ชื่อไฟล์ (ดึงจากหัวข้ออัตโนมัติ)</div>
+        <label class="col-label" for="pdfFilename">ชื่อไฟล์ (ดึงจากหัวข้ออัตโนมัติ)</label>
         <input type="text" id="pdfFilename" placeholder="เช่น pali-thai-01">
       </div>
     </div>
@@ -614,6 +629,7 @@ function render(){
 
 function renderPanel(panelId, words, sel, clickFn){
   const panel = document.getElementById(panelId);
+  const panelName = panelId === 'paliPanel' ? 'pali' : 'thai';
   panel.innerHTML = '';
   let lastPara = null; let suppressAutoBreak = false;
 
@@ -623,6 +639,10 @@ function renderPanel(panelId, words, sel, clickFn){
 
     const span = document.createElement('span');
     span.className = 'w'; 
+    span.setAttribute('role', 'button');
+    span.setAttribute('aria-label', `คำว่า ${w.text}`);
+    span.tabIndex = (activePanel === panelName && activeIndex === idx) || (activePanel !== panelName && idx === 0) ? 0 : -1;
+    span.dataset.index = idx;
     span.innerHTML = parseMarkdown(w.text); // Render Markdown
     
     if(w.pairId !== null){
@@ -636,6 +656,25 @@ function renderPanel(panelId, words, sel, clickFn){
       else if(sel.start!==null && sel.end!==null && idx>sel.start && idx<sel.end) span.classList.add('sel-range');
     }
     span.onclick = () => clickFn(idx);
+    span.onkeydown = (event) => {
+      if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault();
+        clickFn(idx);
+        const next = document.querySelector(`#${panelId} .w[data-index="${idx}"]`);
+        if(next) next.focus();
+      } else if(event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'ArrowLeft' || event.key === 'ArrowUp'){
+        event.preventDefault();
+        const direction = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1;
+        const nextIndex = Math.max(0, Math.min(words.length - 1, idx + direction));
+        const next = panel.querySelector(`.w[data-index="${nextIndex}"]`);
+        if(next) next.focus();
+      } else if(event.key === 'Home' || event.key === 'End'){
+        event.preventDefault();
+        const nextIndex = event.key === 'Home' ? 0 : words.length - 1;
+        const next = panel.querySelector(`.w[data-index="${nextIndex}"]`);
+        if(next) next.focus();
+      }
+    };
     panel.appendChild(span); panel.appendChild(document.createTextNode(' '));
 
     if(w.breakAfter === 'tab') panel.appendChild(makeTabBreak());
@@ -684,16 +723,25 @@ function buildPreviewFragment(){
       const pair = pairs.find(p => p.id === pid);
       const span = document.createElement('span');
       span.className = 'matched'; span.dataset.pairId = pid; span.dataset.base = 'pali';
+      span.setAttribute('role', 'button'); span.setAttribute('tabindex', '0');
+      span.setAttribute('aria-label', `สลับข้อความบาลีและไทย: ${pair.paliText}`);
+      span.setAttribute('aria-pressed', 'false');
       span.innerHTML = parseMarkdown(pair.paliText);
       
       const showPali = () => { span.innerHTML = parseMarkdown(pair.paliText); span.classList.remove('thai-mode'); };
       const showThai = () => { span.innerHTML = parseMarkdown(pair.thaiText); span.classList.add('thai-mode'); };
       span.onmouseenter = () => showThai();
       span.onmouseleave = () => { span.dataset.base === 'pali' ? showPali() : showThai(); };
+      span.onfocus = () => showThai();
+      span.onblur = () => { span.dataset.base === 'pali' ? showPali() : showThai(); };
       span.onclick = () => {
         span.dataset.base = (span.dataset.base === 'pali') ? 'thai' : 'pali';
         span.classList.toggle('pinned', span.dataset.base === 'thai');
+        span.setAttribute('aria-pressed', String(span.dataset.base === 'thai'));
         span.dataset.base === 'pali' ? showPali() : showThai();
+      };
+      span.onkeydown = (event) => {
+        if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); span.click(); }
       };
       frag.appendChild(span); frag.appendChild(document.createTextNode(' '));
       lastPara = paliWords[j-1].para; const lastW = paliWords[j-1];
