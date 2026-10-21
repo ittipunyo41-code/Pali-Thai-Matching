@@ -1,27 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
-<head><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-</style>
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>เครื่องมือจับคู่ประโยคบาลี–ไทย</title>
@@ -29,38 +8,89 @@
 <meta name="theme-color" content="#3973b9">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{color-scheme:light;--paper:#f5f8fc;--paper-raised:#ffffff;--ink:#243247;--ink-soft:#64748b;--rule:#dce5ef;--accent:#3973b9;--accent-soft:#edf4fc;--thai-text:#315f91;--select-strong:#3973b9;--select-strong-text:#ffffff;--select-soft:#dceafb;--select-hover:#edf4fc;}
-  *{box-sizing:border-box;} html{overscroll-behavior-y:none;}
-  body{font-family:'Sarabun',sans-serif;background:var(--paper);color:var(--ink);margin:0;padding:24px;line-height:1.55;}
-  .wrap{max-width:1080px;margin:0 auto;}
-  h1{font-size:clamp(1.3rem,2.4vw,1.65rem);font-weight:700;margin:0 0 4px;}
-  .sub{color:var(--ink-soft);font-size:.94rem;margin:0 0 22px;}
-  section{background:var(--paper-raised);border:1px solid var(--rule);border-radius:14px;padding:20px;margin-bottom:16px;}
-  h2{font-size:1rem;font-weight:700;margin:0 0 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
-  .badge{font-size:.78rem;font-weight:500;color:var(--ink-soft);background:var(--accent-soft);padding:3px 10px;border-radius:20px;}
-  .textarea-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;}
-  .col-label{display:block;font-size:.82rem;font-weight:600;color:var(--ink-soft);}
-  .counter{font-weight:400;font-size:.75rem;color:var(--ink-soft);background:var(--paper);padding:2px 6px;border-radius:4px;border:1px solid var(--rule);margin-left:6px;}
-  .textarea-tools{display:flex;gap:5px;flex-wrap:wrap;} .textarea-tools button{font-size:.75rem;padding:4px 9px;border-radius:999px;margin:0;}
-  .format-group{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;} .format-group button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-  textarea{width:100%;min-height:140px;font-family:'Sarabun',sans-serif;font-size:1.02rem;padding:10px 12px;border:1px solid var(--rule);border-radius:9px;background:var(--paper);color:var(--ink);resize:none;line-height:1.65;overflow:hidden;}
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;} @media(max-width:640px){.two-col{grid-template-columns:1fr;}}
-  button{font-family:'Sarabun',sans-serif;font-size:.88rem;font-weight:600;padding:8px 14px;border:1px solid var(--rule);border-radius:999px;background:var(--paper-raised);color:var(--ink);cursor:pointer;transition:.15s;}
-  button:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent);color:var(--accent);} button:disabled{opacity:.35;cursor:not-allowed;} button.solid{background:var(--accent);border-color:var(--accent);color:#fff;}
-  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center;} .status{font-size:.86rem;color:var(--ink-soft);flex:1 1 220px;}
-  .word-panel{border:1px solid var(--rule);border-radius:10px;background:var(--paper);padding:14px 16px;min-height:110px;line-height:1.85;font-size:1.02rem;overflow-x:auto;word-break:normal;overflow-wrap:break-word;}
-  .w{display:inline;padding:2px 4px;margin:0 -4px;border-radius:5px;cursor:pointer;transition:.1s;} .w:not(.disabled):hover{background:var(--select-hover);} .w.sel-start,.w.sel-end{background:var(--select-strong);color:var(--select-strong-text);font-weight:600;} .w.sel-range{background:var(--select-soft);}
-  .para-break{display:block;height:0.25em;line-height:0;font-size:0;} .tab-break{display:inline-block;width:1.5em;height:0.01em;}
-  .pairs-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.9rem;} .pairs-table th{text-align:left;color:var(--ink-soft);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--rule);} .pairs-table td{padding:7px 8px;border-bottom:1px solid var(--rule);vertical-align:top;}
-  .swatch{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle;} .empty-note{color:var(--ink-soft);font-size:.88rem;font-style:italic;}
-  .preview{border:1px solid var(--rule);border-radius:10px;padding:18px;background:var(--paper);font-size:1.08rem;line-height:1.85;overflow-x:auto;} .preview .matched{cursor:pointer;border-bottom:1px dashed var(--ink-soft);border-radius:3px;padding:1px 3px;margin:0 -3px;} .preview .matched.thai-mode{color:var(--thai-text);background:var(--select-soft);border-bottom:1px solid var(--thai-text);} .preview .matched.pinned{font-weight:700;}
-  .hint{font-size:.82rem;color:var(--ink-soft);margin-top:8px;}
-  .paste-notice{display:none;margin-top:8px;padding:8px 10px;background:var(--accent-soft);border:1px solid var(--rule);border-radius:8px;font-size:.84rem;} .paste-notice.show{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-  #paliPanel{--pali-font-size:20px;font-size:var(--pali-font-size);} #thaiPanel{--thai-font-size:18px;font-size:var(--thai-font-size);}
-  .font-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 8px;font-size:.9rem;} .font-group{display:flex;align-items:center;gap:8px;}
-  .break-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;padding:9px 10px;background:var(--accent-soft);border-radius:9px;font-size:.86rem;}
-  .break-target{flex:1 1 180px;color:var(--ink-soft);font-size:.84rem;}
-  .sticky-actions{position:sticky;bottom:0;z-index:10;margin-top:10px;padding:10px 0;background:color-mix(in srgb,var(--paper-raised) 94%,transparent);border-top:1px solid var(--rule);}
+  :root {
+    color-scheme: light;
+    --paper: #f5f8fc;
+    --paper-raised: #ffffff;
+    --ink: #243247;
+    --ink-soft: #64748b;
+    --rule: #dce5ef;
+    --accent: #3973b9;
+    --accent-soft: #edf4fc;
+    --thai-text: #2b5278;
+    --select-strong: #3973b9;
+    --select-strong-text: #ffffff;
+    --select-soft: #dceafb;
+    --select-hover: #edf4fc;
+  }
+  * { box-sizing: border-box; }
+  html { overscroll-behavior-y: none; }
+  body { font-family: 'Sarabun', sans-serif; background: var(--paper); color: var(--ink); margin: 0; padding: 24px; line-height: 1.55; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  h1 { font-size: clamp(1.3rem, 2.4vw, 1.65rem); font-weight: 700; margin: 0 0 4px; }
+  .sub { color: var(--ink-soft); font-size: .94rem; margin: 0 0 22px; }
+  section { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  h2 { font-size: 1rem; font-weight: 700; margin: 0 0 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .badge { font-size: .78rem; font-weight: 500; color: var(--ink-soft); background: var(--accent-soft); padding: 3px 10px; border-radius: 20px; }
+  .textarea-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+  .col-label { display: block; font-size: .82rem; font-weight: 600; color: var(--ink-soft); }
+  .counter { font-weight: 400; font-size: .75rem; color: var(--ink-soft); background: var(--paper); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--rule); margin-left: 6px; }
+  .textarea-tools { display: flex; gap: 5px; flex-wrap: wrap; }
+  .textarea-tools button { font-size: .75rem; padding: 4px 9px; border-radius: 999px; margin: 0; }
+  .format-group { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .format-group button.active, .mode-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  textarea { width: 100%; min-height: 130px; font-family: 'Sarabun', sans-serif; font-size: 1.02rem; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 9px; background: var(--paper); color: var(--ink); resize: none; line-height: 1.65; overflow: hidden; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:640px) { .two-col { grid-template-columns: 1fr; } }
+  button { font-family: 'Sarabun', sans-serif; font-size: .88rem; font-weight: 600; padding: 8px 14px; border: 1px solid var(--rule); border-radius: 999px; background: var(--paper-raised); color: var(--ink); cursor: pointer; transition: .15s; }
+  button:hover:not(:disabled) { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  button:disabled { opacity: .35; cursor: not-allowed; }
+  button.solid { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; align-items: center; }
+  .status { font-size: .86rem; color: var(--ink-soft); flex: 1 1 220px; }
+  .word-panel { border: 1px solid var(--rule); border-radius: 10px; background: var(--paper); padding: 14px 16px; min-height: 140px; max-height: 380px; overflow-y: auto; line-height: 1.85; font-size: 1.02rem; word-break: normal; overflow-wrap: break-word; }
+  .w { display: inline; padding: 2px 4px; margin: 0 -4px; border-radius: 5px; cursor: pointer; transition: .1s; }
+  .w:not(.disabled):hover { background: var(--select-hover); }
+  .w.sel-start, .w.sel-end { background: var(--select-strong); color: var(--select-strong-text); font-weight: 600; }
+  .w.sel-range { background: var(--select-soft); }
+  .para-break { display: block; height: 0.25em; line-height: 0; font-size: 0; }
+  .tab-break { display: inline-block; width: 1.5em; height: 0.01em; }
+  .pairs-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: .9rem; }
+  .pairs-table th { text-align: left; color: var(--ink-soft); font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--rule); }
+  .pairs-table td { padding: 7px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .empty-note { color: var(--ink-soft); font-size: .88rem; font-style: italic; }
+  
+  /* Preview Section Styling */
+  .preview { border: 1px solid var(--rule); border-radius: 10px; padding: 18px; background: var(--paper); font-size: 1.08rem; line-height: 1.85; overflow-x: auto; }
+  .preview .matched { cursor: pointer; border-bottom: 1px dashed var(--ink-soft); border-radius: 3px; padding: 1px 3px; margin: 0 -3px; }
+  .preview .matched.thai-mode { color: var(--thai-text); background: var(--select-soft); border-bottom: 1px solid var(--thai-text); }
+  .preview .matched.pinned { font-weight: 700; }
+  
+  /* Compact Interlinear Stacked Mode */
+  .stacked-container { display: flex; flex-direction: column; gap: 8px; background: var(--paper); }
+  .stacked-container.grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; }
+  
+  .stacked-block { background: var(--paper-raised); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 8px; padding: 8px 12px; transition: .15s; }
+  .stacked-block:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+  .stacked-pali { font-weight: 600; font-size: 1.05rem; color: var(--ink); line-height: 1.5; }
+  .stacked-thai { font-size: .95rem; color: var(--thai-text); line-height: 1.45; margin-top: 3px; padding-top: 3px; border-top: 1px dashed #e2e8f0; }
+  .stacked-num { font-size: .78rem; font-weight: 700; color: var(--ink-soft); margin-right: 6px; opacity: .75; }
+
+  /* Sticky Buffer Banner for Match Section */
+  .selection-buffer { position: sticky; top: 0; z-index: 15; background: #fff8e1; border: 1px solid #ffe082; color: #795548; padding: 8px 12px; border-radius: 8px; font-size: .88rem; margin-bottom: 8px; box-shadow: 0 2px 6px rgba(0,0,0,.05); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .selection-buffer-text { font-weight: 600; color: #4e342e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%; }
+
+  .hint { font-size: .82rem; color: var(--ink-soft); margin-top: 8px; }
+  .paste-notice { display: none; margin-top: 8px; padding: 8px 10px; background: var(--accent-soft); border: 1px solid var(--rule); border-radius: 8px; font-size: .84rem; }
+  .paste-notice.show { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  #paliPanel { --pali-font-size: 20px; font-size: var(--pali-font-size); }
+  #thaiPanel { --thai-font-size: 18px; font-size: var(--thai-font-size); }
+  .font-controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 0 0 8px; font-size: .9rem; }
+  .font-group { display: flex; align-items: center; gap: 8px; }
+  .break-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; padding: 9px 10px; background: var(--accent-soft); border-radius: 9px; font-size: .86rem; }
+  .break-target { flex: 1 1 180px; color: var(--ink-soft); font-size: .84rem; }
+  .sticky-actions { position: sticky; bottom: 0; z-index: 10; margin-top: 10px; padding: 10px 0; background: color-mix(in srgb, var(--paper-raised) 94%, transparent); border-top: 1px solid var(--rule); }
 </style>
 </head>
 <body>
@@ -113,6 +143,13 @@
 
   <section id="matchSection" style="display:none;">
     <h2>2. จับคู่ช่วงประโยค <span class="badge" id="pairCount">0 คู่</span></h2>
+    
+    <!-- Sticky Buffer Banner when Pali is selected -->
+    <div id="selectionBuffer" class="selection-buffer" style="display:none;">
+      <div>📌 กำลังจับคู่กับบาลี: <span id="bufferPaliText" class="selection-buffer-text"></span></div>
+      <button onclick="clearSelection()" style="padding:2px 8px; font-size:.75rem;">ยกเลิกเลือก</button>
+    </div>
+
     <div class="row">
       <span class="status" id="statusText">คลิกคำต้นและปลายฝั่งบาลี จากนั้นฝั่งไทย</span>
       <div class="font-controls">
@@ -121,8 +158,8 @@
       </div>
     </div>
     <div class="two-col" style="margin-top:10px;">
-      <div><div class="col-label">บาลี</div><div class="word-panel" id="paliPanel"></div></div>
-      <div><div class="col-label">ไทย</div><div class="word-panel" id="thaiPanel"></div></div>
+      <div><div class="col-label">บาลี (คลิกคำต้น-ปลาย)</div><div class="word-panel" id="paliPanel"></div></div>
+      <div><div class="col-label">ไทย (คลิกคำแปลที่ตรงกัน)</div><div class="word-panel" id="thaiPanel"></div></div>
     </div>
     <div class="break-row"><span class="break-target" id="breakTarget">— ยังไม่ได้เลือกคำ —</span><button onclick="insertBreak('tab')">⇥ Tab</button><button onclick="insertBreak('newline')">↵ ขึ้นบรรทัดใหม่</button><button onclick="insertBreak(null)">✕ ลบตัวแบ่ง</button></div>
     <div class="sticky-actions"><div class="row"><button class="solid" id="confirmBtn" onclick="confirmPair()" disabled>✓ ยืนยันจับคู่ (Enter)</button><button onclick="clearSelection()">ยกเลิก (Esc)</button><button onclick="autoAlign()">⚡ Auto align</button><button onclick="undoLastPair()" id="undoBtn" disabled>ลบคู่ล่าสุด (Ctrl+Z)</button><button onclick="resetAllPairs()">ล้างคู่ทั้งหมด</button></div></div>
@@ -132,13 +169,33 @@
 
   <section id="previewSection" style="display:none;">
     <h2>3. ผลลัพธ์ฝึกท่อง <span class="badge">โหมดฝึกจำ</span></h2>
-    <div class="row" style="margin-bottom:10px;">
+    <div class="row" style="margin-bottom:12px; border-bottom:1px solid var(--rule); padding-bottom:10px;">
+      <span style="font-weight:600; font-size:.9rem; margin-right:4px;">รูปแบบการแสดงผล:</span>
+      <button type="button" id="modeInlineBtn" class="mode-btn active" onclick="switchDisplayMode('inline')">🔤 โต้ตอบ (Inline)</button>
+      <button type="button" id="modeStackedBtn" class="mode-btn" onclick="switchDisplayMode('stacked')">📑 บาลีบน-ไทยล่าง (Compact)</button>
+    </div>
+
+    <!-- Sub-controls for Inline Mode -->
+    <div id="inlineControls" class="row" style="margin-bottom:10px;">
       <button onclick="toggleAllThai(false)">👁️ บาลีล้วน (B)</button>
       <button onclick="toggleAllThai(true)">📖 ไทยล้วน (T)</button>
-      <button onclick="shufflePairs()">🔀 สุ่ม</button>
+      <button onclick="shufflePairs()">🔀 สุ่มลำดับ</button>
+      <button onclick="restoreOriginalOrder()">🔄 ลำดับเดิม</button>
     </div>
+
+    <!-- Sub-controls for Stacked Mode -->
+    <div id="stackedControls" class="row" style="margin-bottom:10px; display:none;">
+      <button onclick="toggleStackedLayout()" id="layoutToggleBtn">📱 แสดงแบบรายการเรียงเดี่ยว</button>
+      <button onclick="toggleNumbering()" id="numToggleBtn">🔢 ซ่อนเลขข้อ</button>
+      <button onclick="shufflePairs()">🔀 สุ่มลำดับ</button>
+      <button onclick="restoreOriginalOrder()">🔄 ลำดับเดิม</button>
+    </div>
+
+    <!-- Display Areas -->
     <div class="preview" id="previewArea"></div>
-    <p class="hint">ชี้เพื่อดูแปลชั่วคราว คลิกเพื่อล็อคไว้</p>
+    <div class="preview stacked-container grid-layout" id="stackedArea" style="display:none;"></div>
+    
+    <p class="hint" id="previewHint">ชี้เพื่อดูแปลชั่วคราว คลิกเพื่อล็อคไว้</p>
   </section>
 
   <section id="exportSection" style="display:none;">
@@ -176,16 +233,39 @@
 <button id="shortcutToggle" onclick="document.getElementById('shortcutHelp').style.display=document.getElementById('shortcutHelp').style.display==='none'?'block':'none'" style="position:fixed;bottom:20px;right:20px;z-index:99;border-radius:50%;width:40px;height:40px;padding:0;">⌨️</button>
 
 <script>
-let paliWords=[];let thaiWords=[];let pairs=[];let nextPairId=1;
-let curPali={start:null,end:null};let curThai={start:null,end:null};
-let activePanel=null;let activeIndex=null;
+let paliWords=[]; let thaiWords=[]; let pairs=[]; let nextPairId=1;
+let displayPairs=[];
+let curPali={start:null,end:null}; let curThai={start:null,end:null};
+let activePanel=null; let activeIndex=null;
+let currentDisplayMode='inline';
+let showNumbers=true;
+let isGridLayout=true;
+
 const samplePali="สตฺถา กิเมตฺถ ภิกฺขเว เอตรหิ กถาย นิสินฺนาตฺถาติ ปุจฺฉิตฺวา\n\nอิมาย นาม ภนฺเตติ วุตฺเต\n\nน ภิกฺขเว อิทาเนเวส เอวํ กโรตีติ วตฺวา อตีตํ อาหริ";
 const sampleThai="พระศาสดาตรัสถามว่า ภิกษุทั้งหลาย บัดนี้พวกเธอนั่งสนทนากันด้วยเรื่องอะไร\n\nเมื่อภิกษุเหล่านั้นกราบทูลว่า ด้วยเรื่องชื่อนี้ พระเจ้าข้า\n\nจึงตรัสว่า ภิกษุทั้งหลาย มิใช่บัดนี้เท่านั้นที่เธอทำเช่นนี้ แล้วทรงนำเรื่องในอดีตมาตรัสเล่า";
-function parseMarkdown(s){if(!s)return'';let h=s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');h=h.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');h=h.replace(/\*(.*?)\*/g,'<em>$1</em>');return h;}
-function updateCountsAndResize(el){el.style.height='auto';el.style.height=Math.max(120,el.scrollHeight)+'px';const v=el.value.trim();const chars=v.length;const words=v?v.split(/\s+/).filter(w=>w.length>0).length:0;const id=el.id==='paliInput'?'paliCount':'thaiCount';document.getElementById(id).textContent=`${words} คำ / ${chars} อักษร`;}
-function formatKeepParagraphLogic(text){return text.replace(/\r\n/g,'\n').replace(/[ \t]+\n/g,'\n').replace(/\n[ \t]+/g,'\n').split('\n').map(l=>l.trim()).join('\n').replace(/\n{3,}/g,'\n\n').replace(/(?<!\n)\n(?!\n)/g,' ').replace(/ {2,}/g,' ').trim();}
-function formatMergeLogic(text){return text.replace(/[\r\n]+/g,' ').replace(/\s{2,}/g,' ').trim();}
-function formatSentenceLogic(text){return text.replace(/\r\n/g,'\n').replace(/([.!?ฯ।])\s+/g,'$1\n').replace(/\n{2,}/g,'\n\n').replace(/[ \t]{2,}/g,' ').trim();}
+
+function parseMarkdown(s){
+  if(!s)return'';
+  let h=s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  h=h.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  h=h.replace(/\*(.*?)\*/g,'<em>$1</em>');
+  return h;
+}
+
+function updateCountsAndResize(el){
+  el.style.height='auto';
+  el.style.height=Math.max(120,el.scrollHeight)+'px';
+  const v=el.value.trim();
+  const chars=v.length;
+  const words=v?v.split(/\s+/).filter(w=>w.length>0).length:0;
+  const id=el.id==='paliInput'?'paliCount':'thaiCount';
+  document.getElementById(id).textContent=`${words} คำ / ${chars} อักษร`;
+}
+
+function formatKeepParagraphLogic(text){ return text.replace(/\r\n/g,'\n').replace(/[ \t]+\n/g,'\n').replace(/\n[ \t]+/g,'\n').split('\n').map(l=>l.trim()).join('\n').replace(/\n{3,}/g,'\n\n').replace(/(?<!\n)\n(?!\n)/g,' ').replace(/ {2,}/g,' ').trim(); }
+function formatMergeLogic(text){ return text.replace(/[\r\n]+/g,' ').replace(/\s{2,}/g,' ').trim(); }
+function formatSentenceLogic(text){ return text.replace(/\r\n/g,'\n').replace(/([.!?ฯ।])\s+/g,'$1\n').replace(/\n{2,}/g,'\n\n').replace(/[ \t]{2,}/g,' ').trim(); }
+
 function attachTextareaEvents(){
   ['paliInput','thaiInput'].forEach(id=>{
     const el=document.getElementById(id);
@@ -203,16 +283,20 @@ function attachTextareaEvents(){
     updateCountsAndResize(el);
   });
 }
+
 function showPasteNotice(inputId,original,cleaned){
   const noticeId=inputId==='paliInput'?'paliPasteNotice':'thaiPasteNotice';
   const notice=document.getElementById(noticeId);
   const origLines=(original.match(/\n/g)||[]).length;
   if(origLines<=1){notice.classList.remove('show');return;}
   notice.innerHTML=`วาง ${original.split(/\s+/).length} คำ พบขึ้นบรรทัดใหม่ ${origLines} จุด — จัดเป็น <strong>คงย่อหน้า</strong> แล้ว <button onclick="applyFormat('${inputId}','keep')" style="font-size:.75rem;padding:2px 8px;">คงย่อหน้า</button> <button onclick="applyFormat('${inputId}','merge')" style="font-size:.75rem;padding:2px 8px;">รวมยาว</button>`;
-  notice.classList.add('show');setTimeout(()=>notice.classList.remove('show'),8000);
+  notice.classList.add('show');
+  setTimeout(()=>notice.classList.remove('show'),8000);
 }
-function clearText(id){document.getElementById(id).value='';document.getElementById(id).dispatchEvent(new Event('input'));}
-function copyText(id){const t=document.getElementById(id).value;if(t)navigator.clipboard.writeText(t);}
+
+function clearText(id){ document.getElementById(id).value=''; document.getElementById(id).dispatchEvent(new Event('input')); }
+function copyText(id){ const t=document.getElementById(id).value; if(t)navigator.clipboard.writeText(t); }
+
 function applyFormat(id,mode){
   const el=document.getElementById(id);if(!el.value.trim())return;
   let newVal='';if(mode==='keep')newVal=formatKeepParagraphLogic(el.value);else if(mode==='merge')newVal=formatMergeLogic(el.value);else if(mode==='sentence')newVal=formatSentenceLogic(el.value);
@@ -223,85 +307,560 @@ function applyFormat(id,mode){
   document.getElementById(prefix+'MergeBtn').classList.toggle('active',mode==='merge');
   document.getElementById(prefix+'SentBtn').classList.toggle('active',mode==='sentence');
 }
-function loadSample(){document.getElementById('paliInput').value=samplePali;document.getElementById('thaiInput').value=sampleThai;document.getElementById('paliInput').dispatchEvent(new Event('input'));document.getElementById('thaiInput').dispatchEvent(new Event('input'));processTexts();}
-function tokenize(str){const words=[];let para=0;str.replace(/\r\n?/g,'\n').split('\n').forEach(line=>{const clean=line.replace(/\s+/g,' ').trim();if(!clean){para++;return;}clean.split(' ').forEach(t=>{if(t)words.push({text:t,pairId:null,para:para,breakAfter:null});});para++;});return words;}
-function makeParaBreak(){const b=document.createElement('span');b.className='para-break';return b;} function makeTabBreak(){const b=document.createElement('span');b.className='tab-break';return b;}
-function processTexts(){
-  const p=document.getElementById('paliInput').value;const t=document.getElementById('thaiInput').value;
-  if(!p.trim()||!t.trim()){alert("กรุณาใส่ข้อความทั้งสองช่องก่อนครับ");return;}
-  paliWords=tokenize(p);thaiWords=tokenize(t);pairs=[];nextPairId=1;curPali={start:null,end:null};curThai={start:null,end:null};
-  document.getElementById('matchSection').style.display='block';document.getElementById('previewSection').style.display='block';document.getElementById('exportSection').style.display='block';
-  setupExportSync();render();applyPaliFontSize();applyThaiFontSize();
+
+function loadSample(){
+  document.getElementById('paliInput').value=samplePali;
+  document.getElementById('thaiInput').value=sampleThai;
+  document.getElementById('paliInput').dispatchEvent(new Event('input'));
+  document.getElementById('thaiInput').dispatchEvent(new Event('input'));
+  processTexts();
 }
+
+function tokenize(str){
+  const words=[];let para=0;
+  str.replace(/\r\n?/g,'\n').split('\n').forEach(line=>{
+    const clean=line.replace(/\s+/g,' ').trim();
+    if(!clean){para++;return;}
+    clean.split(' ').forEach(t=>{if(t)words.push({text:t,pairId:null,para:para,breakAfter:null});});
+    para++;
+  });
+  return words;
+}
+
+function makeParaBreak(){const b=document.createElement('span');b.className='para-break';return b;}
+function makeTabBreak(){const b=document.createElement('span');b.className='tab-break';return b;}
+
+function processTexts(){
+  const p=document.getElementById('paliInput').value;
+  const t=document.getElementById('thaiInput').value;
+  if(!p.trim()||!t.trim()){alert("กรุณาใส่ข้อความทั้งสองช่องก่อนครับ");return;}
+  paliWords=tokenize(p);thaiWords=tokenize(t);pairs=[];displayPairs=[];nextPairId=1;
+  curPali={start:null,end:null};curThai={start:null,end:null};
+  document.getElementById('matchSection').style.display='block';
+  document.getElementById('previewSection').style.display='block';
+  document.getElementById('exportSection').style.display='block';
+  setupExportSync();
+  render();
+  applyPaliFontSize();
+  applyThaiFontSize();
+}
+
 function pairColor(id){const hue=(id*47)%360;return{bg:`hsl(${hue},55%,88%)`,border:`hsl(${hue},45%,45%)`};}
-function paliClick(idx){activePanel='pali';activeIndex=idx;if(paliWords[idx].pairId!==null){updateBreakTarget();return;}if(curPali.start===null){curPali.start=idx;curPali.end=null;}else if(curPali.end===null){if(idx>=curPali.start)curPali.end=idx;else curPali.start=idx;}else{curPali.start=idx;curPali.end=null;curThai={start:null,end:null};}render();}
-function thaiClick(idx){activePanel='thai';activeIndex=idx;if(thaiWords[idx].pairId!==null){updateBreakTarget();return;}if(curPali.start===null||curPali.end===null){updateStatus("เลือกบาลีให้ครบก่อนครับ");return;}if(curThai.start===null){curThai.start=idx;curThai.end=null;}else if(curThai.end===null){if(idx>=curThai.start)curThai.end=idx;else curThai.start=idx;}else{curThai.start=idx;curThai.end=null;}render();}
-function insertBreak(type){if(activePanel===null||activeIndex===null){alert("คลิกคำก่อนครับ");return;}const words=activePanel==='pali'?paliWords:thaiWords;words[activeIndex].breakAfter=type;render();}
-function updateBreakTarget(){const el=document.getElementById('breakTarget');if(!el)return;if(activePanel===null||activeIndex===null){el.textContent='— ยังไม่ได้เลือกคำ —';return;}const words=activePanel==='pali'?paliWords:thaiWords;const w=words[activeIndex];const label=activePanel==='pali'?'บาลี':'ไทย';el.innerHTML=`หลังคำ (${label}): "<strong>${parseMarkdown(w.text)}</strong>"`;}
-function confirmPair(){if(curPali.start===null||curPali.end===null||curThai.start===null||curThai.end===null)return;const id=nextPairId++;const color=pairColor(id);const paliText=paliWords.slice(curPali.start,curPali.end+1).map(w=>w.text).join(' ');const thaiText=thaiWords.slice(curThai.start,curThai.end+1).map(w=>w.text).join(' ');for(let i=curPali.start;i<=curPali.end;i++)paliWords[i].pairId=id;for(let i=curThai.start;i<=curThai.end;i++)thaiWords[i].pairId=id;pairs.push({id,paliStart:curPali.start,paliEnd:curPali.end,thaiStart:curThai.start,thaiEnd:curThai.end,paliText,thaiText,color});curPali={start:null,end:null};curThai={start:null,end:null};render();}
+
+function paliClick(idx){
+  activePanel='pali';activeIndex=idx;
+  if(paliWords[idx].pairId!==null){updateBreakTarget();return;}
+  if(curPali.start===null){curPali.start=idx;curPali.end=null;}
+  else if(curPali.end===null){if(idx>=curPali.start)curPali.end=idx;else curPali.start=idx;}
+  else{curPali.start=idx;curPali.end=null;curThai={start:null,end:null};}
+  render();
+}
+
+function thaiClick(idx){
+  activePanel='thai';activeIndex=idx;
+  if(thaiWords[idx].pairId!==null){updateBreakTarget();return;}
+  if(curPali.start===null||curPali.end===null){updateStatus("เลือกบาลีให้ครบก่อนครับ");return;}
+  if(curThai.start===null){curThai.start=idx;curThai.end=null;}
+  else if(curThai.end===null){if(idx>=curThai.start)curThai.end=idx;else curThai.start=idx;}
+  else{curThai.start=idx;curThai.end=null;}
+  render();
+}
+
+function insertBreak(type){
+  if(activePanel===null||activeIndex===null){alert("คลิกคำก่อนครับ");return;}
+  const words=activePanel==='pali'?paliWords:thaiWords;
+  words[activeIndex].breakAfter=type;
+  render();
+}
+
+function updateBreakTarget(){
+  const el=document.getElementById('breakTarget');if(!el)return;
+  if(activePanel===null||activeIndex===null){el.textContent='— ยังไม่ได้เลือกคำ —';return;}
+  const words=activePanel==='pali'?paliWords:thaiWords;
+  const w=words[activeIndex];
+  const label=activePanel==='pali'?'บาลี':'ไทย';
+  el.innerHTML=`หลังคำ (${label}): "<strong>${parseMarkdown(w.text)}</strong>"`;
+}
+
+function confirmPair(){
+  if(curPali.start===null||curPali.end===null||curThai.start===null||curThai.end===null)return;
+  const id=nextPairId++;
+  const color=pairColor(id);
+  const paliText=paliWords.slice(curPali.start,curPali.end+1).map(w=>w.text).join(' ');
+  const thaiText=thaiWords.slice(curThai.start,curThai.end+1).map(w=>w.text).join(' ');
+  for(let i=curPali.start;i<=curPali.end;i++)paliWords[i].pairId=id;
+  for(let i=curThai.start;i<=curThai.end;i++)thaiWords[i].pairId=id;
+  const pair={id,paliStart:curPali.start,paliEnd:curPali.end,thaiStart:curThai.start,thaiEnd:curThai.end,paliText,thaiText,color};
+  pairs.push(pair);
+  displayPairs=[...pairs];
+  curPali={start:null,end:null};curThai={start:null,end:null};
+  render();
+}
+
 function clearSelection(){curPali={start:null,end:null};curThai={start:null,end:null};render();}
-function deletePair(id){const pair=pairs.find(p=>p.id===id);if(!pair)return;for(let i=pair.paliStart;i<=pair.paliEnd;i++)paliWords[i].pairId=null;for(let i=pair.thaiStart;i<=pair.thaiEnd;i++)thaiWords[i].pairId=null;pairs=pairs.filter(p=>p.id!==id);render();}
-function undoLastPair(){if(pairs.length>0)deletePair(pairs[pairs.length-1].id);} function resetAllPairs(){paliWords.forEach(w=>w.pairId=null);thaiWords.forEach(w=>w.pairId=null);pairs=[];curPali={start:null,end:null};curThai={start:null,end:null};render();}
-function groupByPara(words){const paras=[];if(words.length===0)return paras;let cp=words[0].para;let st=0;for(let i=1;i<words.length;i++){if(words[i].para!==cp){paras.push({start:st,end:i-1});cp=words[i].para;st=i;}}paras.push({start:st,end:words.length-1});return paras;}
-function autoAlign(){if(paliWords.length===0||thaiWords.length===0){alert("กรุณาประมวลผลก่อนครับ");return;}const pp=groupByPara(paliWords);const tp=groupByPara(thaiWords);const n=Math.min(pp.length,tp.length);if(pairs.length>0)if(!confirm('มีการจับคู่อยู่แล้ว จะล้างและจัดคู่ใหม่ตามย่อหน้า?'))return;paliWords.forEach(w=>w.pairId=null);thaiWords.forEach(w=>w.pairId=null);pairs=[];nextPairId=1;for(let i=0;i<n;i++){const a=pp[i];const b=tp[i];const id=nextPairId++;const color=pairColor(id);const paliText=paliWords.slice(a.start,a.end+1).map(w=>w.text).join(' ');const thaiText=thaiWords.slice(b.start,b.end+1).map(w=>w.text).join(' ');for(let j=a.start;j<=a.end;j++)paliWords[j].pairId=id;for(let j=b.start;j<=b.end;j++)thaiWords[j].pairId=id;pairs.push({id,paliStart:a.start,paliEnd:a.end,thaiStart:b.start,thaiEnd:b.end,paliText,thaiText,color});}curPali={start:null,end:null};curThai={start:null,end:null};render();}
+
+function deletePair(id){
+  const pair=pairs.find(p=>p.id===id);if(!pair)return;
+  for(let i=pair.paliStart;i<=pair.paliEnd;i++)paliWords[i].pairId=null;
+  for(let i=pair.thaiStart;i<=pair.thaiEnd;i++)thaiWords[i].pairId=null;
+  pairs=pairs.filter(p=>p.id!==id);
+  displayPairs=displayPairs.filter(p=>p.id!==id);
+  render();
+}
+
+function undoLastPair(){if(pairs.length>0)deletePair(pairs[pairs.length-1].id);}
+
+function resetAllPairs(){
+  paliWords.forEach(w=>w.pairId=null);
+  thaiWords.forEach(w=>w.pairId=null);
+  pairs=[];displayPairs=[];
+  curPali={start:null,end:null};curThai={start:null,end:null};
+  render();
+}
+
+function groupByPara(words){
+  const paras=[];if(words.length===0)return paras;
+  let cp=words[0].para;let st=0;
+  for(let i=1;i<words.length;i++){
+    if(words[i].para!==cp){paras.push({start:st,end:i-1});cp=words[i].para;st=i;}
+  }
+  paras.push({start:st,end:words.length-1});
+  return paras;
+}
+
+function autoAlign(){
+  if(paliWords.length===0||thaiWords.length===0){alert("กรุณาประมวลผลก่อนครับ");return;}
+  const pp=groupByPara(paliWords);const tp=groupByPara(thaiWords);
+  const n=Math.min(pp.length,tp.length);
+  if(pairs.length>0)if(!confirm('มีการจับคู่อยู่แล้ว จะล้างและจัดคู่ใหม่ตามย่อหน้า?'))return;
+  paliWords.forEach(w=>w.pairId=null);thaiWords.forEach(w=>w.pairId=null);
+  pairs=[];nextPairId=1;
+  for(let i=0;i<n;i++){
+    const a=pp[i];const b=tp[i];const id=nextPairId++;const color=pairColor(id);
+    const paliText=paliWords.slice(a.start,a.end+1).map(w=>w.text).join(' ');
+    const thaiText=thaiWords.slice(b.start,b.end+1).map(w=>w.text).join(' ');
+    for(let j=a.start;j<=a.end;j++)paliWords[j].pairId=id;
+    for(let j=b.start;j<=b.end;j++)thaiWords[j].pairId=id;
+    pairs.push({id,paliStart:a.start,paliEnd:a.end,thaiStart:b.start,thaiEnd:b.end,paliText,thaiText,color});
+  }
+  displayPairs=[...pairs];
+  curPali={start:null,end:null};curThai={start:null,end:null};
+  render();
+}
+
 function updateStatus(msg){document.getElementById('statusText').textContent=msg;}
-function render(){renderPanel('paliPanel',paliWords,curPali,paliClick);renderPanel('thaiPanel',thaiWords,curThai,thaiClick);renderPairsTable();renderPreview();updateBreakTarget();document.getElementById('confirmBtn').disabled=!(curPali.start!==null&&curPali.end!==null&&curThai.start!==null&&curThai.end!==null);document.getElementById('undoBtn').disabled=pairs.length===0;document.getElementById('pairCount').textContent=pairs.length+' คู่';if(curPali.start===null)updateStatus("คลิกคำต้นและปลายฝั่งบาลี");else if(curPali.end===null)updateStatus("เลือกคำปลายฝั่งบาลี");else if(curThai.start===null)updateStatus("เลือกคำต้นฝั่งไทย");else if(curThai.end===null)updateStatus("เลือกคำปลายฝั่งไทย แล้วกด Enter");else updateStatus("พร้อมยืนยัน กด Enter"); }
-function renderPanel(panelId,words,sel,clickFn){const panel=document.getElementById(panelId);panel.innerHTML='';let lastPara=null;let sup=false;words.forEach((w,idx)=>{if(!sup&&lastPara!==null&&w.para!==lastPara)panel.appendChild(makeParaBreak());sup=false;lastPara=w.para;const span=document.createElement('span');span.className='w';span.innerHTML=parseMarkdown(w.text);if(w.pairId!==null){const c=pairColor(w.pairId);span.style.background=c.bg;span.style.borderBottom=`2px solid ${c.border}`;span.classList.add('disabled');}else{if(idx===sel.start)span.classList.add('sel-start');else if(idx===sel.end)span.classList.add('sel-end');else if(sel.start!==null&&sel.end!==null&&idx>sel.start&&idx<sel.end)span.classList.add('sel-range');}span.onclick=()=>clickFn(idx);panel.appendChild(span);panel.appendChild(document.createTextNode(' '));if(w.breakAfter==='tab')panel.appendChild(makeTabBreak());else if(w.breakAfter==='newline'){panel.appendChild(makeParaBreak());sup=true;}});if(words.length===0)panel.innerHTML='<span class="empty-note">—</span>';}
-function renderPairsTable(){const body=document.getElementById('pairsBody');const table=document.getElementById('pairsTable');const note=document.getElementById('noPairsNote');body.innerHTML='';if(pairs.length===0){table.style.display='none';note.style.display='block';return;}table.style.display='table';note.style.display='none';pairs.forEach((p,i)=>{const tr=document.createElement('tr');tr.innerHTML=`<td><span class="swatch" style="background:${p.color.border}"></span>${i+1}</td><td>${parseMarkdown(p.paliText)}</td><td>${parseMarkdown(p.thaiText)}</td><td><button onclick="deletePair(${p.id})">ลบ</button></td>`;body.appendChild(tr);});}
-function buildPreviewFragment(){const frag=document.createDocumentFragment();let i=0;let lastPara=null;let sup=false;while(i<paliWords.length){const w=paliWords[i];if(!sup&&lastPara!==null&&w.para!==lastPara)frag.appendChild(makeParaBreak());sup=false;lastPara=w.para;if(w.pairId===null){const t=document.createElement('span');t.innerHTML=parseMarkdown(w.text)+' ';frag.appendChild(t);if(w.breakAfter==='tab')frag.appendChild(makeTabBreak());else if(w.breakAfter==='newline'){frag.appendChild(makeParaBreak());sup=true;}i++;}else{const pid=w.pairId;let j=i;while(j<paliWords.length&&paliWords[j].pairId===pid)j++;const pair=pairs.find(p=>p.id===pid);const span=document.createElement('span');span.className='matched';span.dataset.pairId=pid;span.dataset.base='pali';span.innerHTML=parseMarkdown(pair.paliText);const showPali=()=>{span.innerHTML=parseMarkdown(pair.paliText);span.classList.remove('thai-mode');};const showThai=()=>{span.innerHTML=parseMarkdown(pair.thaiText);span.classList.add('thai-mode');};span.onmouseenter=()=>showThai();span.onmouseleave=()=>{span.dataset.base==='pali'?showPali():showThai();};span.onclick=()=>{span.dataset.base=span.dataset.base==='pali'?'thai':'pali';span.classList.toggle('pinned',span.dataset.base==='thai');span.dataset.base==='pali'?showPali():showThai();};frag.appendChild(span);frag.appendChild(document.createTextNode(' '));lastPara=paliWords[j-1].para;const lastW=paliWords[j-1];if(lastW.breakAfter==='tab')frag.appendChild(makeTabBreak());else if(lastW.breakAfter==='newline'){frag.appendChild(makeParaBreak());sup=true;}i=j;}}return frag;}
-function renderPreview(){const area=document.getElementById('previewArea');area.innerHTML='';if(paliWords.length===0){area.innerHTML='<span class="empty-note">ยังไม่มีข้อความ</span>';return;}area.appendChild(buildPreviewFragment());}
-function toggleAllThai(show){document.querySelectorAll('#previewArea .matched').forEach(span=>{const pid=span.dataset.pairId;const pair=pairs.find(p=>p.id==pid);if(!pair)return;if(show){span.innerHTML=parseMarkdown(pair.thaiText);span.classList.add('thai-mode','pinned');span.dataset.base='thai';}else{span.innerHTML=parseMarkdown(pair.paliText);span.classList.remove('thai-mode','pinned');span.dataset.base='pali';}});}
-function shufflePairs(){for(let i=pairs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pairs[i],pairs[j]]=[pairs[j],pairs[i]];}render();}
-let paliFontSize=Number(localStorage.getItem('paliFontSize'))||20;function applyPaliFontSize(){const el=document.getElementById('paliPanel');const lb=document.getElementById('paliFontSizeLabel');if(el)el.style.setProperty('--pali-font-size',`${paliFontSize}px`);if(lb)lb.textContent=`${paliFontSize}px`;}function changePaliFontSize(d){paliFontSize=Math.max(12,Math.min(36,paliFontSize+d));localStorage.setItem('paliFontSize',paliFontSize);applyPaliFontSize();}
-let thaiFontSize=Number(localStorage.getItem('thaiFontSize'))||18;function applyThaiFontSize(){const el=document.getElementById('thaiPanel');const lb=document.getElementById('thaiFontSizeLabel');if(el)el.style.setProperty('--thai-font-size',`${thaiFontSize}px`);if(lb)lb.textContent=`${thaiFontSize}px`;}function changeThaiFontSize(d){thaiFontSize=Math.max(12,Math.min(32,thaiFontSize+d));localStorage.setItem('thaiFontSize',thaiFontSize);applyThaiFontSize();}
+
+function switchDisplayMode(mode){
+  currentDisplayMode=mode;
+  document.getElementById('modeInlineBtn').classList.toggle('active', mode==='inline');
+  document.getElementById('modeStackedBtn').classList.toggle('active', mode==='stacked');
+  
+  document.getElementById('inlineControls').style.display = mode==='inline' ? 'flex' : 'none';
+  document.getElementById('stackedControls').style.display = mode==='stacked' ? 'flex' : 'none';
+  
+  document.getElementById('previewArea').style.display = mode==='inline' ? 'block' : 'none';
+  document.getElementById('stackedArea').style.display = mode==='stacked' ? (isGridLayout ? 'grid' : 'flex') : 'none';
+  
+  document.getElementById('previewHint').textContent = mode==='inline' 
+    ? 'ชี้เพื่อดูแปลชั่วคราว คลิกเพื่อล็อคไว้' 
+    : 'แสดงประโยคบาลีด้านบน และคำแปลไทยด้านล่างแบบกระชับ';
+  
+  renderPreview();
+}
+
+function toggleStackedLayout(){
+  isGridLayout = !isGridLayout;
+  const area = document.getElementById('stackedArea');
+  area.classList.toggle('grid-layout', isGridLayout);
+  area.style.display = isGridLayout ? 'grid' : 'flex';
+  document.getElementById('layoutToggleBtn').textContent = isGridLayout ? '📱 แสดงแบบรายการเรียงเดี่ยว' : '📐 แสดงแบบตารางกระจาย';
+}
+
+function toggleNumbering(){
+  showNumbers = !showNumbers;
+  document.getElementById('numToggleBtn').textContent = showNumbers ? '🔢 ซ่อนเลขข้อ' : '🔢 แสดงเลขข้อ';
+  renderPreview();
+}
+
+function renderSelectionBuffer(){
+  const buffer = document.getElementById('selectionBuffer');
+  const bufferText = document.getElementById('bufferPaliText');
+  if(curPali.start !== null){
+    const endIdx = curPali.end !== null ? curPali.end : curPali.start;
+    const selectedText = paliWords.slice(curPali.start, endIdx + 1).map(w=>w.text).join(' ');
+    bufferText.innerHTML = parseMarkdown(selectedText);
+    buffer.style.display = 'flex';
+  } else {
+    buffer.style.display = 'none';
+  }
+}
+
+function render(){
+  renderPanel('paliPanel',paliWords,curPali,paliClick);
+  renderPanel('thaiPanel',thaiWords,curThai,thaiClick);
+  renderPairsTable();
+  renderSelectionBuffer();
+  renderPreview();
+  updateBreakTarget();
+  document.getElementById('confirmBtn').disabled=!(curPali.start!==null&&curPali.end!==null&&curThai.start!==null&&curThai.end!==null);
+  document.getElementById('undoBtn').disabled=pairs.length===0;
+  document.getElementById('pairCount').textContent=pairs.length+' คู่';
+  if(curPali.start===null)updateStatus("คลิกคำต้นและปลายฝั่งบาลี");
+  else if(curPali.end===null)updateStatus("เลือกคำปลายฝั่งบาลี");
+  else if(curThai.start===null)updateStatus("เลือกคำต้นฝั่งไทย");
+  else if(curThai.end===null)updateStatus("เลือกคำปลายฝั่งไทย แล้วกด Enter");
+  else updateStatus("พร้อมยืนยัน กด Enter");
+}
+
+function renderPanel(panelId,words,sel,clickFn){
+  const panel=document.getElementById(panelId);panel.innerHTML='';
+  let lastPara=null;let sup=false;
+  words.forEach((w,idx)=>{
+    if(!sup&&lastPara!==null&&w.para!==lastPara)panel.appendChild(makeParaBreak());
+    sup=false;lastPara=w.para;
+    const span=document.createElement('span');span.className='w';
+    span.innerHTML=parseMarkdown(w.text);
+    if(w.pairId!==null){
+      const c=pairColor(w.pairId);
+      span.style.background=c.bg;span.style.borderBottom=`2px solid ${c.border}`;
+      span.classList.add('disabled');
+    }else{
+      if(idx===sel.start)span.classList.add('sel-start');
+      else if(idx===sel.end)span.classList.add('sel-end');
+      else if(sel.start!==null&&sel.end!==null&&idx>sel.start&&idx<sel.end)span.classList.add('sel-range');
+    }
+    span.onclick=()=>clickFn(idx);
+    panel.appendChild(span);
+    panel.appendChild(document.createTextNode(' '));
+    if(w.breakAfter==='tab')panel.appendChild(makeTabBreak());
+    else if(w.breakAfter==='newline'){panel.appendChild(makeParaBreak());sup=true;}
+  });
+  if(words.length===0)panel.innerHTML='<span class="empty-note">—</span>';
+}
+
+function renderPairsTable(){
+  const body=document.getElementById('pairsBody');
+  const table=document.getElementById('pairsTable');
+  const note=document.getElementById('noPairsNote');
+  body.innerHTML='';
+  if(pairs.length===0){table.style.display='none';note.style.display='block';return;}
+  table.style.display='table';note.style.display='none';
+  pairs.forEach((p,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><span class="swatch" style="background:${p.color.border}"></span>${i+1}</td><td>${parseMarkdown(p.paliText)}</td><td>${parseMarkdown(p.thaiText)}</td><td><button onclick="deletePair(${p.id})">ลบ</button></td>`;
+    body.appendChild(tr);
+  });
+}
+
+function buildPreviewFragment(){
+  const frag=document.createDocumentFragment();
+  let i=0;let lastPara=null;let sup=false;
+  while(i<paliWords.length){
+    const w=paliWords[i];
+    if(!sup&&lastPara!==null&&w.para!==lastPara)frag.appendChild(makeParaBreak());
+    sup=false;lastPara=w.para;
+    if(w.pairId===null){
+      const t=document.createElement('span');
+      t.innerHTML=parseMarkdown(w.text)+' ';
+      frag.appendChild(t);
+      if(w.breakAfter==='tab')frag.appendChild(makeTabBreak());
+      else if(w.breakAfter==='newline'){frag.appendChild(makeParaBreak());sup=true;}
+      i++;
+    }else{
+      const pid=w.pairId;let j=i;
+      while(j<paliWords.length&&paliWords[j].pairId===pid)j++;
+      const pair=pairs.find(p=>p.id===pid);
+      const span=document.createElement('span');
+      span.className='matched';span.dataset.pairId=pid;span.dataset.base='pali';
+      span.innerHTML=parseMarkdown(pair.paliText);
+      const showPali=()=>{span.innerHTML=parseMarkdown(pair.paliText);span.classList.remove('thai-mode');};
+      const showThai=()=>{span.innerHTML=parseMarkdown(pair.thaiText);span.classList.add('thai-mode');};
+      span.onmouseenter=()=>showThai();
+      span.onmouseleave=()=>{span.dataset.base==='pali'?showPali():showThai();};
+      span.onclick=()=>{
+        span.dataset.base=span.dataset.base==='pali'?'thai':'pali';
+        span.classList.toggle('pinned',span.dataset.base==='thai');
+        span.dataset.base==='pali'?showPali():showThai();
+      };
+      frag.appendChild(span);
+      frag.appendChild(document.createTextNode(' '));
+      lastPara=paliWords[j-1].para;
+      const lastW=paliWords[j-1];
+      if(lastW.breakAfter==='tab')frag.appendChild(makeTabBreak());
+      else if(lastW.breakAfter==='newline'){frag.appendChild(makeParaBreak());sup=true;}
+      i=j;
+    }
+  }
+  return frag;
+}
+
+function renderStackedPreview(){
+  const area=document.getElementById('stackedArea');
+  area.innerHTML='';
+  if(displayPairs.length===0){
+    area.innerHTML='<span class="empty-note">ยังไม่มีคู่ประโยคที่จับคู่ไว้ (กรุณาเลือกจับคู่ประโยคก่อน)</span>';
+    return;
+  }
+  displayPairs.forEach((pair, idx) => {
+    const card=document.createElement('div');
+    card.className='stacked-block';
+    card.style.borderLeftColor=pair.color.border;
+    
+    const paliDiv=document.createElement('div');
+    paliDiv.className='stacked-pali';
+    
+    const thaiDiv=document.createElement('div');
+    thaiDiv.className='stacked-thai';
+
+    const numPrefix = showNumbers ? `<span class="stacked-num">${idx + 1}.</span>` : '';
+    paliDiv.innerHTML = numPrefix + parseMarkdown(pair.paliText);
+    thaiDiv.innerHTML = parseMarkdown(pair.thaiText);
+
+    card.appendChild(paliDiv);
+    card.appendChild(thaiDiv);
+    area.appendChild(card);
+  });
+}
+
+function renderPreview(){
+  if(currentDisplayMode==='inline'){
+    const area=document.getElementById('previewArea');
+    area.innerHTML='';
+    if(paliWords.length===0){area.innerHTML='<span class="empty-note">ยังไม่มีข้อความ</span>';return;}
+    area.appendChild(buildPreviewFragment());
+  } else {
+    renderStackedPreview();
+  }
+}
+
+function toggleAllThai(show){
+  document.querySelectorAll('#previewArea .matched').forEach(span=>{
+    const pid=span.dataset.pairId;
+    const pair=pairs.find(p=>p.id==pid);
+    if(!pair)return;
+    if(show){
+      span.innerHTML=parseMarkdown(pair.thaiText);
+      span.classList.add('thai-mode','pinned');
+      span.dataset.base='thai';
+    }else{
+      span.innerHTML=parseMarkdown(pair.paliText);
+      span.classList.remove('thai-mode','pinned');
+      span.dataset.base='pali';
+    }
+  });
+}
+
+function shufflePairs(){
+  for(let i=displayPairs.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [displayPairs[i],displayPairs[j]]=[displayPairs[j],displayPairs[i]];
+  }
+  renderPreview();
+}
+
+function restoreOriginalOrder(){
+  displayPairs=[...pairs];
+  renderPreview();
+}
+
+let paliFontSize=Number(localStorage.getItem('paliFontSize'))||20;
+function applyPaliFontSize(){
+  const el=document.getElementById('paliPanel');
+  const lb=document.getElementById('paliFontSizeLabel');
+  if(el)el.style.setProperty('--pali-font-size',`${paliFontSize}px`);
+  if(lb)lb.textContent=`${paliFontSize}px`;
+}
+function changePaliFontSize(d){
+  paliFontSize=Math.max(12,Math.min(36,paliFontSize+d));
+  localStorage.setItem('paliFontSize',paliFontSize);
+  applyPaliFontSize();
+}
+
+let thaiFontSize=Number(localStorage.getItem('thaiFontSize'))||18;
+function applyThaiFontSize(){
+  const el=document.getElementById('thaiPanel');
+  const lb=document.getElementById('thaiFontSizeLabel');
+  if(el)el.style.setProperty('--thai-font-size',`${thaiFontSize}px`);
+  if(lb)lb.textContent=`${thaiFontSize}px`;
+}
+function changeThaiFontSize(d){
+  thaiFontSize=Math.max(12,Math.min(32,thaiFontSize+d));
+  localStorage.setItem('thaiFontSize',thaiFontSize);
+  applyThaiFontSize();
+}
+
 // Export functions
 let filenameManuallyEdited=false;
 function sanitizeFilename(s){return String(s||'').replace(/[\\/:*?"<>|\n\r\t]/g,'-').replace(/\s+/g,' ').trim();}
-function getExportTitleFile(){const t=document.getElementById('pdfTitle');const f=document.getElementById('pdfFilename');const titleVal=(t&&t.value.trim())||'ผลลัพธ์การจับคู่บาลี-ไทย';const fileVal=(f&&f.value.trim())||sanitizeFilename(titleVal)||'pali-thai-result';return{titleVal,fileVal};}
-function setupExportSync(){const t=document.getElementById('pdfTitle');const f=document.getElementById('pdfFilename');if(!t||!f)return;t.addEventListener('input',()=>{if(!filenameManuallyEdited)f.value=sanitizeFilename(t.value);});f.addEventListener('input',()=>{filenameManuallyEdited=f.value.trim()!==sanitizeFilename(t.value);});}
+function getExportTitleFile(){
+  const t=document.getElementById('pdfTitle');
+  const f=document.getElementById('pdfFilename');
+  const titleVal=(t&&t.value.trim())||'ผลลัพธ์การจับคู่บาลี-ไทย';
+  const fileVal=(f&&f.value.trim())||sanitizeFilename(titleVal)||'pali-thai-result';
+  return{titleVal,fileVal};
+}
+
+function setupExportSync(){
+  const t=document.getElementById('pdfTitle');
+  const f=document.getElementById('pdfFilename');
+  if(!t||!f)return;
+  t.addEventListener('input',()=>{if(!filenameManuallyEdited)f.value=sanitizeFilename(t.value);});
+  f.addEventListener('input',()=>{filenameManuallyEdited=f.value.trim()!==sanitizeFilename(t.value);});
+}
+
 function exportInteractiveHTML(){
   if(paliWords.length===0){alert('ยังไม่มีข้อมูล');return;}
   const {titleVal,fileVal}=getExportTitleFile();
-  let htmlContent='';let i=0;let lastPara=null;let sup=false;
+  
+  let htmlInlineContent='';let i=0;let lastPara=null;let sup=false;
   while(i<paliWords.length){
     const w=paliWords[i];
-    if(!sup&&lastPara!==null&&w.para!==lastPara)htmlContent+='<div class="para-break"></div>';
+    if(!sup&&lastPara!==null&&w.para!==lastPara)htmlInlineContent+='<div class="para-break"></div>';
     sup=false;lastPara=w.para;
-    if(w.pairId===null){htmlContent+=parseMarkdown(w.text)+' ';if(w.breakAfter==='newline'){htmlContent+='<div class="para-break"></div>';sup=true;}i++;}
-    else{const pid=w.pairId;let j=i;while(j<paliWords.length&&paliWords[j].pairId===pid)j++;const pair=pairs.find(p=>p.id===pid);htmlContent+=`<span class="matched" data-pali="${pair.paliText.replace(/"/g,'&quot;')}" data-thai="${pair.thaiText.replace(/"/g,'&quot;')}" data-base="pali">${parseMarkdown(pair.paliText)}</span> `;lastPara=paliWords[j-1].para;if(paliWords[j-1].breakAfter==='newline'){htmlContent+='<div class="para-break"></div>';sup=true;}i=j;}
+    if(w.pairId===null){
+      htmlInlineContent+=parseMarkdown(w.text)+' ';
+      if(w.breakAfter==='newline'){htmlInlineContent+='<div class="para-break"></div>';sup=true;}
+      i++;
+    }else{
+      const pid=w.pairId;let j=i;
+      while(j<paliWords.length&&paliWords[j].pairId===pid)j++;
+      const pair=pairs.find(p=>p.id===pid);
+      htmlInlineContent+=`<span class="matched" data-pali="${pair.paliText.replace(/"/g,'&quot;')}" data-thai="${pair.thaiText.replace(/"/g,'&quot;')}" data-base="pali">${parseMarkdown(pair.paliText)}</span> `;
+      lastPara=paliWords[j-1].para;
+      if(paliWords[j-1].breakAfter==='newline'){htmlInlineContent+='<div class="para-break"></div>';sup=true;}
+      i=j;
+    }
   }
-  const finalDoc=`<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${titleVal}</title><style>body{font-family:sans-serif;max-width:800px;margin:0 auto;padding:24px;line-height:1.85;font-size:1.1rem;background:#f5f8fc;} .toolbar{position:sticky;top:0;background:#f5f8fc;padding:12px 0;border-bottom:1px solid #dce5ef;display:flex;gap:8px;z-index:10;flex-wrap:wrap;} .toolbar button{padding:6px 12px;border-radius:20px;border:1px solid #dce5ef;cursor:pointer;} .matched{cursor:pointer;border-bottom:1px dashed #64748b;padding:1px 3px;border-radius:3px;} .matched.thai-mode{color:#315f91;background:#dceafb;border-bottom:1px solid #315f91;} .matched.pinned{font-weight:700;} .para-break{height:0.6em;}</style></head><body><div class="toolbar"><button onclick="toggleAll(false)">บาลีล้วน</button><button onclick="toggleAll(true)">ไทยล้วน</button></div><h1>${parseMarkdown(titleVal)}</h1><div id="content">${htmlContent}</div><p style="color:#64748b;font-size:.85rem;">แตะที่คำเพื่อสลับบาลี-ไทย ออฟไลน์ได้</p><script>
+
+  let htmlStackedContent='';
+  pairs.forEach((pair, idx)=>{
+    htmlStackedContent += `<div style="border-left: 3px solid ${pair.color.border}; background:#fff; padding:8px 12px; margin-bottom:8px; border-radius:6px; border:1px solid #dce5ef;">
+      <div style="font-weight:600; font-size:1.05rem; color:#243247;"><span style="color:#64748b; margin-right:6px; font-size:.8rem;">${idx+1}.</span>${parseMarkdown(pair.paliText)}</div>
+      <div style="font-size:.95rem; color:#2b5278; margin-top:3px; padding-top:3px; border-top:1px dashed #e2e8f0;">${parseMarkdown(pair.thaiText)}</div>
+    </div>`;
+  });
+
+  const finalDoc=`<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${titleVal}</title>
+<style>
+  body{font-family:sans-serif;max-width:850px;margin:0 auto;padding:24px;line-height:1.85;font-size:1.08rem;background:#f5f8fc;color:#243247;} 
+  .toolbar{position:sticky;top:0;background:#f5f8fc;padding:12px 0;border-bottom:1px solid #dce5ef;display:flex;gap:8px;z-index:10;flex-wrap:wrap;} 
+  .toolbar button{padding:6px 14px;border-radius:20px;border:1px solid #dce5ef;background:#fff;cursor:pointer;font-weight:600;} 
+  .toolbar button.active{background:#3973b9;color:#fff;border-color:#3973b9;}
+  .matched{cursor:pointer;border-bottom:1px dashed #64748b;padding:1px 3px;border-radius:3px;} 
+  .matched.thai-mode{color:#2b5278;background:#dceafb;border-bottom:1px solid #2b5278;} 
+  .matched.pinned{font-weight:700;} 
+  .para-break{height:0.6em;}
+</style></head>
+<body>
+<div class="toolbar">
+  <button id="bInline" class="active" onclick="setMode('inline')">🔤 โต้ตอบ (Inline)</button>
+  <button id="bStacked" onclick="setMode('stacked')">📑 บาลีบน-ไทยล่าง (Compact)</button>
+  <span style="border-left:1px solid #ccc; margin:0 4px;"></span>
+  <button onclick="toggleAll(false)" class="inline-btn">บาลีล้วน</button>
+  <button onclick="toggleAll(true)" class="inline-btn">ไทยล้วน</button>
+</div>
+<h1>${parseMarkdown(titleVal)}</h1>
+<div id="inlineView">${htmlInlineContent}</div>
+<div id="stackedView" style="display:none; display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:10px;">${htmlStackedContent}</div>
+<p style="color:#64748b;font-size:.85rem;margin-top:16px;">ไฟล์นี้เปิดแบบออฟไลน์ได้ทันที</p>
+<script>
 function parseMD(s){if(!s)return'';let h=s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');h=h.replace(/\\*\\*(.*?)\\*\\*/g,'<strong>$1</strong>');return h;}
-function toggleAll(show){document.querySelectorAll('.matched').forEach(span=>{if(show){span.innerHTML=parseMD(span.dataset.thai);span.classList.add('thai-mode','pinned');span.dataset.base='thai';}else{span.innerHTML=parseMD(span.dataset.pali);span.classList.remove('thai-mode','pinned');span.dataset.base='pali';}});}
-document.querySelectorAll('.matched').forEach(span=>{const showPali=()=>{span.innerHTML=parseMD(span.dataset.pali);span.classList.remove('thai-mode');};const showThai=()=>{span.innerHTML=parseMD(span.dataset.thai);span.classList.add('thai-mode');};span.addEventListener('click',()=>{span.dataset.base=span.dataset.base==='pali'?'thai':'pali';span.classList.toggle('pinned',span.dataset.base==='thai');span.dataset.base==='pali'?showPali():showThai();});});
-<\/script></body></html>`;
-  const blob=new Blob([finalDoc],{type:'text/html'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fileVal+'.html';a.click();URL.revokeObjectURL(url);
+function setMode(m){
+  document.getElementById('inlineView').style.display = m==='inline'?'block':'none';
+  document.getElementById('stackedView').style.display = m==='stacked'?'grid':'none';
+  document.getElementById('bInline').classList.toggle('active', m==='inline');
+  document.getElementById('bStacked').classList.toggle('active', m==='stacked');
+  document.querySelectorAll('.inline-btn').forEach(b=>b.style.display = m==='inline'?'inline-block':'none');
 }
+function toggleAll(show){
+  document.querySelectorAll('.matched').forEach(span=>{
+    if(show){span.innerHTML=parseMD(span.dataset.thai);span.classList.add('thai-mode','pinned');span.dataset.base='thai';}
+    else{span.innerHTML=parseMD(span.dataset.pali);span.classList.remove('thai-mode','pinned');span.dataset.base='pali';}
+  });
+}
+document.querySelectorAll('.matched').forEach(span=>{
+  const showPali=()=>{span.innerHTML=parseMD(span.dataset.pali);span.classList.remove('thai-mode');};
+  const showThai=()=>{span.innerHTML=parseMD(span.dataset.thai);span.classList.add('thai-mode');};
+  span.addEventListener('click',()=>{
+    span.dataset.base=span.dataset.base==='pali'?'thai':'pali';
+    span.classList.toggle('pinned',span.dataset.base==='thai');
+    span.dataset.base==='pali'?showPali():showThai();
+  });
+});
+<\/script></body></html>`;
+
+  const blob=new Blob([finalDoc],{type:'text/html'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=fileVal+'.html';a.click();
+  URL.revokeObjectURL(url);
+}
+
 function exportSideBySideHTML(){
   if(paliWords.length===0){alert('ยังไม่มีข้อมูล');return;}
   const {titleVal,fileVal}=getExportTitleFile();
-  function renderCol(words){let h='';let lastPara=null;let sup=false;words.forEach(w=>{if(!sup&&lastPara!==null&&w.para!==lastPara)h+='<div class="para-break"></div>';sup=false;lastPara=w.para;if(w.pairId!==null){const c=pairColor(w.pairId);h+=`<span style="background:${c.bg};border-bottom:2px solid ${c.border};padding:1px 3px;border-radius:3px;">${parseMarkdown(w.text)}</span> `;}else h+=`<span>${parseMarkdown(w.text)}</span> `;if(w.breakAfter==='newline'){h+='<div class="para-break"></div>';sup=true;}});return h;}
+  function renderCol(words){
+    let h='';let lastPara=null;let sup=false;
+    words.forEach(w=>{
+      if(!sup&&lastPara!==null&&w.para!==lastPara)h+='<div class="para-break"></div>';
+      sup=false;lastPara=w.para;
+      if(w.pairId!==null){
+        const c=pairColor(w.pairId);
+        h+=`<span style="background:${c.bg};border-bottom:2px solid ${c.border};padding:1px 3px;border-radius:3px;">${parseMarkdown(w.text)}</span> `;
+      }else h+=`<span>${parseMarkdown(w.text)}</span> `;
+      if(w.breakAfter==='newline'){h+='<div class="para-break"></div>';sup=true;}
+    });
+    return h;
+  }
   const paliHtml=renderCol(paliWords);const thaiHtml=renderCol(thaiWords);
   const doc=`<!DOCTYPE html><html lang="th"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${titleVal}</title><style>body{font-family:sans-serif;max-width:1100px;margin:20px auto;padding:0 16px;background:#f5f8fc;} .cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;} .col{background:#fff;border:1px solid #dce5ef;border-radius:10px;padding:16px;line-height:1.85;} .label{font-weight:600;color:#64748b;font-size:.85rem;margin-bottom:8px;} .para-break{height:0.6em;}</style></head><body><h1>${parseMarkdown(titleVal)}</h1><div class="cols"><div class="col"><div class="label">บาลี</div><div>${paliHtml}</div></div><div class="col"><div class="label">ไทย</div><div>${thaiHtml}</div></div></div></body></html>`;
   const blob=new Blob([doc],{type:'text/html'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fileVal+'-side.html';a.click();URL.revokeObjectURL(url);
 }
+
 function exportJSON(){
   const data={pali:document.getElementById('paliInput').value,thai:document.getElementById('thaiInput').value,paliWords,thaiWords,pairs,nextPairId,title:document.getElementById('pdfTitle')?.value||'',filename:document.getElementById('pdfFilename')?.value||'',created:new Date().toISOString()};
   const {fileVal}=getExportTitleFile();const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fileVal+'.json';a.click();URL.revokeObjectURL(url);
 }
+
 function importJSON(e){
-  const file=e.target.files[0];if(!file)return;const reader=new FileReader();
-  reader.onload=function(ev){try{const data=JSON.parse(ev.target.result);document.getElementById('paliInput').value=data.pali||'';document.getElementById('thaiInput').value=data.thai||'';document.getElementById('paliInput').dispatchEvent(new Event('input'));document.getElementById('thaiInput').dispatchEvent(new Event('input'));paliWords=data.paliWords||[];thaiWords=data.thaiWords||[];pairs=data.pairs||[];nextPairId=data.nextPairId||1;if(data.title)document.getElementById('pdfTitle').value=data.title;if(data.filename)document.getElementById('pdfFilename').value=data.filename;document.getElementById('matchSection').style.display='block';document.getElementById('previewSection').style.display='block';document.getElementById('exportSection').style.display='block';render();}catch(err){alert('ไฟล์ไม่ถูกต้อง: '+err.message);}};
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const data=JSON.parse(ev.target.result);
+      document.getElementById('paliInput').value=data.pali||'';
+      document.getElementById('thaiInput').value=data.thai||'';
+      document.getElementById('paliInput').dispatchEvent(new Event('input'));
+      document.getElementById('thaiInput').dispatchEvent(new Event('input'));
+      paliWords=data.paliWords||[];thaiWords=data.thaiWords||[];pairs=data.pairs||[];
+      displayPairs=[...pairs];
+      nextPairId=data.nextPairId||1;
+      if(data.title)document.getElementById('pdfTitle').value=data.title;
+      if(data.filename)document.getElementById('pdfFilename').value=data.filename;
+      document.getElementById('matchSection').style.display='block';
+      document.getElementById('previewSection').style.display='block';
+      document.getElementById('exportSection').style.display='block';
+      render();
+    }catch(err){alert('ไฟล์ไม่ถูกต้อง: '+err.message);}
+  };
   reader.readAsText(file);e.target.value='';
 }
-window.addEventListener('DOMContentLoaded',()=>{attachTextareaEvents();applyPaliFontSize();applyThaiFontSize();setupExportSync();});
+
+window.addEventListener('DOMContentLoaded',()=>{
+  attachTextareaEvents();
+  applyPaliFontSize();
+  applyThaiFontSize();
+  setupExportSync();
+});
+
 // Shortcuts
 document.addEventListener('keydown',(e)=>{
   const isCtrl=e.ctrlKey||e.metaKey;
   const activeTag=document.activeElement?.tagName;
   const isTyping=activeTag==='TEXTAREA'||activeTag==='INPUT';
+  
   if(e.key==='?'&&!isTyping){e.preventDefault();const h=document.getElementById('shortcutHelp');h.style.display=h.style.display==='none'?'block':'none';return;}
   if(isTyping&&!isCtrl&&e.key!=='Escape')return;
+  
   if(e.key==='Escape'){e.preventDefault();const h=document.getElementById('shortcutHelp');if(h.style.display==='block')h.style.display='none';else clearSelection();}
   else if(e.key==='Enter'&&!isTyping){const b=document.getElementById('confirmBtn');if(b&&!b.disabled){e.preventDefault();confirmPair();}}
   else if(isCtrl&&e.key.toLowerCase()==='z'&&!e.shiftKey){e.preventDefault();undoLastPair();}
@@ -314,5 +873,5 @@ document.addEventListener('keydown',(e)=>{
 });
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(error=>console.error('PWA service worker registration failed. Serve this app over HTTPS or localhost.',error));});}
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+</body>
 </html>

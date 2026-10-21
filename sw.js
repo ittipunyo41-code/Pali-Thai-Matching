@@ -1,4 +1,3 @@
-
 const CACHE_NAME = 'pali-thai-v2';
 const APP_SHELL = ['./', './index.html', './manifest.json', './icons/icon.svg'];
 

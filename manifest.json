@@ -1,20 +1,20 @@
 {
-  "background_color": "#f5f8fc",
+  "id": "./",
+  "name": "จับคู่ประโยคบาลี–ไทย",
+  "short_name": "บาลี-ไทย",
   "description": "เครื่องมือจับคู่ประโยคบาลี-ไทย สำหรับฝึกอ่านและท่องจำ ไม่ต้องต่อเน็ต",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "background_color": "#f5f8fc",
+  "theme_color": "#3973b9",
+  "lang": "th",
   "icons": [
     {
-      "purpose": "any maskable",
-      "sizes": "any",
       "src": "./icons/icon.svg",
-      "type": "image/svg+xml"
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
-  ],
-  "id": "./",
-  "lang": "th",
-  "name": "จับคู่ประโยคบาลี–ไทย",
-  "scope": "./",
-  "short_name": "บาลี-ไทย",
-  "start_url": "./index.html",
-  "theme_color": "#3973b9"
+  ]
 }
