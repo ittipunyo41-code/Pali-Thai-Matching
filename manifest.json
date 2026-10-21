@@ -5,20 +5,16 @@
   "icons": [
     {
       "purpose": "any maskable",
-      "sizes": "192x192",
-      "src": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4d6.png",
-      "type": "image/png"
-    },
-    {
-      "purpose": "any maskable",
-      "sizes": "512x512",
-      "src": "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4d6.png",
-      "type": "image/png"
+      "sizes": "any",
+      "src": "./icons/icon.svg",
+      "type": "image/svg+xml"
     }
   ],
+  "id": "./",
   "lang": "th",
   "name": "จับคู่ประโยคบาลี–ไทย",
+  "scope": "./",
   "short_name": "บาลี-ไทย",
-  "start_url": "./",
+  "start_url": "./index.html",
   "theme_color": "#3973b9"
 }
