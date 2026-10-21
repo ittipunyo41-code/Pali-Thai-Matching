@@ -1,11 +1,18 @@
-const CACHE_NAME = 'pali-thai-v2';
-const APP_SHELL = ['./', './index.html', './manifest.json', './icons/icon.svg'];
+const CACHE_NAME = 'pali-thai-v3';
+const APP_SHELL = [
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
+  './icons/icon.svg'
+];
 
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))
-  );
-  self.skipWaiting();
+  event.waitUntil(Promise.all([
+    caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)),
+    self.skipWaiting()
+  ]));
 });
 
 self.addEventListener('activate', event => {
