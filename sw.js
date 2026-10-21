@@ -1,13 +1,38 @@
-
 const CACHE_NAME = 'pali-thai-v1';
-const ASSETS = ['./','./index.html','./manifest.json'];
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
+];
 
+// ติดตั้ง Service Worker และบันทึก Cache
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
+  self.skipWaiting(); // บังคับให้ Service Worker ตัวใหม่ทำงานทันที
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+  );
 });
 
+// ลบ Cache เวอร์ชันเก่าเมื่อมีการอัปเดต CACHE_NAME ใหม่
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+// ดึงข้อมูลจาก Cache ก่อน ถ้าไม่มีค่อยดึงจาก Network
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request))
+    caches.match(e.request).then(response => response || fetch(e.request))
   );
 });
